@@ -5,7 +5,7 @@ export default function Header() {
 
 
     return (
-        <header className="bg-blue-950 p-3 px-4 w-full">
+        <header className="bg-blue-950 text-white p-3 px-4 w-full">
             <div className="flex items-center justify-between max-w-5xl mx-auto">
                 <Link href='/' className='font-bold text-2xl uppercase'>Shop</Link>
                 <div className="w-full max-w-2xl border mx-8">
