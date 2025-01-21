@@ -16,7 +16,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body>
+      <body className='selection:bg-amber-100 selection:text-amber-950'>
           <Header />
             {children}
           <Footer />
