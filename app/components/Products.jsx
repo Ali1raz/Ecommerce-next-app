@@ -13,7 +13,7 @@ export default function Products() {
     }, []);
 
     return (
-        <div className='grid grid-cols-1 sm:grid-cols-[repeat(auto-fill,minmax(150px,1fr))] gap-2 mx-2'>
+        <div className='grid  grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2 sm:gap-6 mx-auto sm:px-8 px-4 max-w-6xl'>
             {products?.map(product => (
                 <ProductCard key={product.id} product={product} />
             ))}
