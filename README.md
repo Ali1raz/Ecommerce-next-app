@@ -20,7 +20,13 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
 
 This project uses:
 
-- NextJS, a React JS Framework.
+- Next JS, a React JS Framework.
 - Tailwind CSS for styling.
+- PostgreSQL for database management.
+- Prisma for database interactions for Node.js
+ 
+- Search box adds query to URL to fetch related products
+- There is conditionally rendered button to reset search results.
+
 
 ---
