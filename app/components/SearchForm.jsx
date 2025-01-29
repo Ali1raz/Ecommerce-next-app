@@ -3,7 +3,7 @@ import SearchFormReset from "@/app/components/SearchFormReset";
 
 export default  function SearchForm({query}) {
     return (
-        <Form action='/' scroll={false} className="searchForm flex flex-row relative items-center justify-center">
+        <Form action='/' scroll={false} className="searchForm z-0 flex flex-row relative items-center justify-center">
             <input
                 type="text"
                 name="query"

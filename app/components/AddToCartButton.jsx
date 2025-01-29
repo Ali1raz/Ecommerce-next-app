@@ -7,7 +7,7 @@ export default function AddToCartButton({productId}) {
             <button
                 className='bg-yellow-500 text-white px-4 py-1 mt-1 hover:scale-105'
             >
-                See Product
+                Add to Cart
             </button>
         </Link>
     )

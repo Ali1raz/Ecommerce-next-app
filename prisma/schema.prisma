@@ -1,0 +1,64 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// models:
+
+model User {
+  id         Int      @id @default(autoincrement())
+  name       String   @unique
+  username   String
+  email      String   @unique
+  password   String
+  avatar     String
+  created_at DateTime @default(now())
+  cart       Cart?
+  cart_id    Int?     @unique
+}
+
+model Category {
+  id       Int       @id @default(autoincrement())
+  name     String    @unique
+  products Product[] @relation("productCategories")
+}
+
+model Product {
+  id             Int        @id @default(autoincrement())
+  name           String
+  rating         Float
+  price          Float
+  stock_quantity Int        @default(0)
+  create_at      DateTime   @default(now())
+  categories     Category[] @relation("productCategories")
+  cart_items     CartItem[]
+}
+
+model Cart {
+  id         Int        @id @default(autoincrement())
+  created_at DateTime   @default(now())
+  user       User?      @relation(fields: [user_id], references: [id])
+  user_id    Int?       @unique
+  items      CartItem[]
+}
+
+model CartItem {
+  id         Int     @id @default(autoincrement())
+  cart       Cart    @relation(fields: [cart_id], references: [id])
+  cart_id    Int
+  product    Product @relation(fields: [product_id], references: [id])
+  product_id Int
+  quantity   Int     @default(1)
+
+  @@unique([cart_id, product_id])
+}
