@@ -16,48 +16,39 @@ datasource db {
 // models:
 
 model User {
-  id         Int      @id @default(autoincrement())
+  id         String   @id @default(uuid())
   name       String   @unique
-  username   String
   email      String   @unique
-  password   String
   avatar     String
   created_at DateTime @default(now())
   cart       Cart?
-  cart_id    Int?     @unique
-}
-
-model Category {
-  id       Int       @id @default(autoincrement())
-  name     String    @unique
-  products Product[] @relation("productCategories")
 }
 
 model Product {
-  id             Int        @id @default(autoincrement())
+  id             String     @id @default(uuid())
   name           String
-  rating         Float
+  description    String
+  rating         Float      @default(0)
   price          Float
   stock_quantity Int        @default(0)
-  create_at      DateTime   @default(now())
-  categories     Category[] @relation("productCategories")
+  created_at     DateTime   @default(now())
   cart_items     CartItem[]
 }
 
 model Cart {
-  id         Int        @id @default(autoincrement())
+  id         String     @id @default(uuid())
   created_at DateTime   @default(now())
-  user       User?      @relation(fields: [user_id], references: [id])
-  user_id    Int?       @unique
+  user       User       @relation(fields: [user_id], references: [id])
+  user_id    String     @unique
   items      CartItem[]
 }
 
 model CartItem {
-  id         Int     @id @default(autoincrement())
+  id         String  @id @default(uuid())
   cart       Cart    @relation(fields: [cart_id], references: [id])
-  cart_id    Int
+  cart_id    String
   product    Product @relation(fields: [product_id], references: [id])
-  product_id Int
+  product_id String
   quantity   Int     @default(1)
 
   @@unique([cart_id, product_id])
