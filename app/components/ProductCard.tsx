@@ -1,25 +1,13 @@
 import React from "react";
 import Image from "next/image";
-import AddToCartButton from "./AddToCartButton";
 import Link from "next/link";
-import {formatDate} from "@/utils";
+import {formatDate, Product} from "@/utils";
 
-type ProductCardProps = {
-    id: string;
-    name: string;
-    description: string;
-    price: number;
-    rating: number;
-    image: string;
-    created_at: string;
-    stock_quantity: number;
-}
 
-export default function ProductCard({product}: { product: ProductCardProps }) {
+export default function ProductCard({product}: { product: Product }) {
     const {
         name,
         id,
-        description,
         price,
         rating,
         created_at,
@@ -34,6 +22,7 @@ export default function ProductCard({product}: { product: ProductCardProps }) {
                 <span
                     className='absolute top-1.5 right-1.5 py-1 px-4 text-xs drop-shadow-sm rounded-full bg-red-500 text-white'>{stock_quantity}</span>
             </div>
+
             <div className='p-4'>
                 <p className='line-clamp-1 text-[18px] font-bold capitalize '>{name}</p>
                 <div className='flex  items-center justify-between mt-1'>

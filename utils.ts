@@ -5,3 +5,13 @@ export function formatDate(date: string) {
         year: 'numeric',
     })
 }
+
+export type Product = {
+    id: string;
+    name: string;
+    stock_quantity: number;
+    rating: number;
+    price: number;
+    description: string;
+    created_at: string;
+};

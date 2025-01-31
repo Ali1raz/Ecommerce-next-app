@@ -1,15 +1,7 @@
 import Link from "next/link";
 import React from "react";
 import RemoveFromCartButton from "@/app/components/RemoveFromCartButton";
-
-type Product = {
-    id: string;
-    name: string;
-    price: number;
-    description: string;
-    quantity: number;
-    total: number;
-}
+import {Product} from "@/utils";
 
 export default function CartProduct({product}: { product: Product }) {
     const {name, id, quantity, total, price, description} = product;

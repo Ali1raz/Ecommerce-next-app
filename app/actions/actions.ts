@@ -3,7 +3,7 @@
 import {getKindeServerSession} from "@kinde-oss/kinde-auth-nextjs/server";
 import {prisma} from "@/lib/prisma";
 import {redirect} from "next/navigation";
-import {revalidatePath} from "next/cache";
+import {Errors} from "@/utils";
 
 export async function findOrCreateUser() {
     const {getUser} = getKindeServerSession();
@@ -37,23 +37,37 @@ export async function findOrCreateUser() {
 }
 
 
-export async function get_all_products() {
-    const a = await prisma.product.findMany()
+export async function get_all_products(query?: string) {
+    let a = await prisma.product.findMany();
+
+    if (query) {
+        a = await prisma.product.findMany({
+            where: {
+                OR: [
+                    {name: {contains: query}},
+                    {description: {contains: query}},
+                ]
+            }
+        });
+        console.log('searched for:', query);
+    }
+
     return a
 }
 
-export async function add_new_product(formData: FormData) {
-    const product_name = formData.get('product_name') as string;
-    const product_description = formData.get('product_description') as string;
-    const price = formData.get('price') as string;
-    const stock_quantity = formData.get('stock_quantity') as string;
+export async function add_new_product(
+    product_name: string,
+    product_description: string,
+    price: string,
+    categories: string,
+    stock_quantity: string
+) {
 
     // authentication check
     const {isAuthenticated} = getKindeServerSession();
     if (!(await isAuthenticated())) {
         redirect('api/auth/login');
     }
-
 
     await prisma.product.create({
         data: {
@@ -64,7 +78,6 @@ export async function add_new_product(formData: FormData) {
             stock_quantity: parseInt(stock_quantity),
         }
     })
-    // revalidatePath('/')
     redirect("/")
 }
 
@@ -77,7 +90,7 @@ export async function add_to_cart(id: string, quantity: number = 1) {
 
     try {
         let cart = await prisma.cart.findUnique({where: {user_id: user.id}});
-        console.log('finding cart for: ', user.id);
+        console.log('finding cart for: ', user.given_name);
         if (!cart) {
             console.log('creating new cart')
             cart = await prisma.cart.create({

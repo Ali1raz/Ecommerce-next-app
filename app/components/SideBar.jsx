@@ -1,5 +1,7 @@
 'use client'
 
+import Link from "next/link";
+
 export default function SideBar({isOpen, onClose}) {
     return (
         <div
@@ -10,6 +12,9 @@ export default function SideBar({isOpen, onClose}) {
                 <li className="hover:underline">Kitchen</li>
                 <li>Toys</li>
                 <li>Clothing</li>
+                <li>
+                    <Link href='/products/new'>Add New Product</Link>
+                </li>
             </ul>
             <button
                 className='p-2 absolute right-0 translate-x-full top-0 border-2 border-transparent hover:border-gray-100'

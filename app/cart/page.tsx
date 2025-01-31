@@ -1,14 +1,7 @@
 import {get_cart_items} from "../actions/actions";
 import CartProduct from "../components/CartProduct";
-
-type Product = {
-    id: string;
-    name: string;
-    quantity: number;
-    total: number;
-    price: number;
-    description: string;
-};
+import {Product} from "@/utils";
+import Link from "next/link";
 
 export default async function CartPage() {
 
@@ -20,12 +13,16 @@ export default async function CartPage() {
     } catch (error) {
         console.error("Error fetching cart items:", error);
     }
-    // console.log(await get_cart_items());
+
     return (
         <div className='  max-w-5xl mx-auto py-4 mb-8 px-8'>
-            <h1 className='text-2xl font-bold'>Cart Items:</h1>
+            <h1 className='text-2xl font-bold mb-5'>Cart Items:</h1>
             {cartItems.length === 0 ? (
-                <p>Cart is empty. Go back and add some products!</p>
+                <p className='text-center text-xl'>
+                    Cart is empty. Go <Link href='/'
+                                            className='underline hover:decoration-blue-400 decoration-amber-300'>back</Link> and
+                    add some products!
+                </p>
             ) : (
                 <div className='grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 '>
                     {cartItems?.map(product => (

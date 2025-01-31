@@ -7,10 +7,10 @@ import ProductsList from "@/app/components/ProductsList";
 export default async function Home({searchParams}: { searchParams: Promise<{ query?: string }> }) {
     const {getUser} = getKindeServerSession();
     const user = await getUser();
-    const query = (await searchParams).query;
+    const {query} = await searchParams;
     // await findOrCreateUser()
 
-    const products = await get_all_products();
+    const products = await get_all_products(query);
 
     return (
         <>
