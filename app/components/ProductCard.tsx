@@ -24,9 +24,9 @@ export default function ProductCard({product}: { product: Product }) {
             </div>
 
             <div className='p-4'>
-                <p className='line-clamp-1 text-[18px] font-bold capitalize '>{name}</p>
+                <p className='line-clamp-1  capitalize '>{name}</p>
                 <div className='flex  items-center justify-between mt-1'>
-                    <p className='text-md font-bold'>$ {price}</p>
+                    <p className='text-md font-bold'>Rs {price}</p>
                     <p>{rating} ⭐</p>
                 </div>
                 <Link href={`/products/${id}`}>

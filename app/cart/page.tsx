@@ -24,10 +24,13 @@ export default async function CartPage() {
                     add some products!
                 </p>
             ) : (
-                <div className='grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 '>
-                    {cartItems?.map(product => (
-                        <CartProduct key={product.id} product={product}/>
-                    ))}
+                <div className='space-y-4'>
+                    <Link href='cart/bill' className='underline hover:decoration-blue-400'>View Bill</Link>
+                    <div className='grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 '>
+                        {cartItems?.map(product => (
+                            <CartProduct key={product.id} product={product}/>
+                        ))}
+                    </div>
                 </div>
             )}
         </div>
