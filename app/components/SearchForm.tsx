@@ -1,6 +1,8 @@
 import Form from "next/form";
 import SearchFormReset from "@/app/components/SearchFormReset";
-import {search_products} from "@/app/actions/actions";
+// import {search_products} from "@/app/actions/actions";
+import {Button} from "@/components/ui/button";
+import {SearchIcon} from "lucide-react";
 
 export default function SearchForm({query}: { query?: string }) {
     return (
@@ -14,7 +16,9 @@ export default function SearchForm({query}: { query?: string }) {
                 placeholder="Search..."/>
             <div className=' flex justify-center items-center gap-1 text-md sm:gap-4 absolute right-0 top-0'>
                 {query && <SearchFormReset/>}
-                <button className='px-2 py-1 bg-blue-900/50' type='submit'>🔎</button>
+                <Button variant='secondary' className='rounded-none bg-current/50 w-full h-full' type='submit'>
+                    <SearchIcon/>
+                </Button>
             </div>
         </Form>
     )

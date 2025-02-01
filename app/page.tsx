@@ -1,14 +1,14 @@
 import Link from "next/link";
 import SearchForm from "@/app/components/SearchForm";
 import {getKindeServerSession} from "@kinde-oss/kinde-auth-nextjs/server";
-import {get_all_products} from "@/app/actions/actions";
+import {findOrCreateUser, get_all_products} from "@/app/actions/actions";
 import ProductsList from "@/app/components/ProductsList";
 
 export default async function Home({searchParams}: { searchParams: Promise<{ query?: string }> }) {
     const {getUser} = getKindeServerSession();
     const user = await getUser();
     const {query} = await searchParams;
-    // await findOrCreateUser()
+    await findOrCreateUser()
 
     const products = await get_all_products(query);
 

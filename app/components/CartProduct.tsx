@@ -2,6 +2,7 @@ import Link from "next/link";
 import React from "react";
 import RemoveFromCartButton from "@/app/components/RemoveFromCartButton";
 import {Product} from "@/utils";
+import {Button} from "@/components/ui/button";
 
 export default function CartProduct({product}: { product: Product }) {
     const {name, id, quantity, total, price, description} = product;
@@ -19,10 +20,10 @@ export default function CartProduct({product}: { product: Product }) {
                 </div>
                 <div className='flex justify-between items-center'>
                     <Link href={`/products/${id}`}>
-                        <button
-                            className='bg-blue-900 text-white px-5 py-1 mt-2 transition duration-100 hover:scale-105'>
+                        <Button
+                            className='bg-blue-900 text-white px-5 py-1 mt-2'>
                             View
-                        </button>
+                        </Button>
                     </Link>
                     <RemoveFromCartButton id={id}/>
                 </div>

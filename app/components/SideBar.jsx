@@ -1,6 +1,8 @@
 'use client'
 
 import Link from "next/link";
+import {Button} from "@/components/ui/button";
+import {CloseIcon} from "next/dist/client/components/react-dev-overlay/internal/icons/CloseIcon";
 
 export default function SideBar({isOpen, onClose}) {
     return (
@@ -16,10 +18,11 @@ export default function SideBar({isOpen, onClose}) {
                     <Link href='/products/new'>Add New Product</Link>
                 </li>
             </ul>
-            <button
-                className='p-2 absolute right-0 translate-x-full top-0 border-2 border-transparent hover:border-gray-100'
-                onClick={onClose}>❌
-            </button>
+            <Button variant='destructive'
+                    className='px-2 absolute right-0 translate-x-full  top-0 border-2 border-transparent hover:border-gray-100'
+                    onClick={onClose}>
+                <CloseIcon/>
+            </Button>
         </div>
     )
 }

@@ -1,6 +1,8 @@
 'use client';
 
 import Link from "next/link";
+import {Button} from "@/components/ui/button";
+import {X} from "lucide-react";
 
 export default function SearchFormReset() {
     const reset = () => {
@@ -9,8 +11,10 @@ export default function SearchFormReset() {
     }
 
     return (
-        <button type='reset' className='' onClick={reset}>
-            <Link className='bg-red-500/35 py-1 px-2' href='/'>❌</Link>
-        </button>
+        <Button type='reset' variant='destructive' className='' onClick={reset} asChild={true}>
+            <Link className='bg-red-500/35 px-1  rounded-none  w-full h-full ' href='/'>
+                <X/>
+            </Link>
+        </Button>
     )
 }

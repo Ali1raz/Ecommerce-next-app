@@ -17,13 +17,13 @@ export async function findOrCreateUser() {
         })
 
         if (!existingUser) {
-            console.error("new user created ...");
+            console.log("new user created ...");
             existingUser = await prisma.user.create({
                 data: {
                     id: user.id,
-                    name: user.given_name,
-                    email: user.email,
-                    avatar: user.picture || '',
+                    name: user?.given_name,
+                    email: user?.email,
+                    avatar: user?.picture || '',
                 }
             })
         } else {
