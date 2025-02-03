@@ -8,7 +8,7 @@ export default async function Home({searchParams}: { searchParams: Promise<{ que
     const {getUser} = getKindeServerSession();
     const user = await getUser();
     const {query} = await searchParams;
-    await findOrCreateUser()
+    if (user) await findOrCreateUser()
 
     const products = await get_all_products(query);
 
