@@ -1,26 +1,21 @@
 import AddToCartButton from "./AddToCartButton";
+import {Product} from "@/utils";
 
-type ProductProps = {
-    id: string;
-    name: string;
-    stock_quantity: number;
-    rating: number;
-    price: number;
-}
 
-export default function ProductDetails({product}: { product: ProductProps }) {
-    const {id, name, price, stock_quantity, rating} = product;
+export default function ProductDetails({product}: { product: Product }) {
+    const {id, name, description, price, stock_quantity, rating} = product;
 
     return (
         <div className='max-w-2xl sm:mx-auto mx-5'>
-            <div className='w-full bg-white h-auto min-h-40 p-4 flex items-center justify-center'>
+            <div className='w-full bg-gray-400 h-auto min-h-40 p-4 flex items-center justify-center'>
                 {/*<Image className='mx-auto ' src={`/${image}`} alt={name} width={200} height={200}/>*/}
             </div>
             <div className="mt-6">
+                <p className='text-neutral-600'>{description}</p>
                 <p>{name}</p>
-                <p className="font-bold mt-2">${(price).toFixed(2)}</p>
+                <p className="font-bold mt-2">Rs {(price).toFixed(2)}</p>
                 <div className='my-1 flex items-center justify-start gap-2'>
-                    <p className='text-bold'>Rating:</p><p>{rating}</p>
+                    <p className='text-bold'>Rating:</p><span>{rating}</span>
                     {/*<Image className='inline' src={`/images/ratings/rating-${(stars * 10)}.png`}*/}
                     {/*       alt={`alt-${(stars * 10)}`} width={100} height={10}/>*/}
                     {/*<p><span>{stars}</span> of <span>{count}</span> users</p>*/}
