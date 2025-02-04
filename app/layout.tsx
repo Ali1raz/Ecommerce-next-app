@@ -4,6 +4,9 @@ import Header from "@/app/components/Header";
 import Footer from "@/app/components/Footer";
 import "./globals.css"
 import {Toaster} from "@/components/ui/sonner"
+import {Inter} from "next/font/google"
+
+const inter = Inter({subsets: ['latin']});
 
 
 export const metadata: Metadata = {
@@ -18,7 +21,7 @@ export default function RootLayout({
 }>) {
     return (
         <html lang="en">
-        <body className='selection:bg-amber-100 selection:text-amber-950'>
+        <body className={`${inter.className} selection:bg-amber-100 selection:text-amber-950`}>
         <Header/>
         {children}
         <Toaster/>

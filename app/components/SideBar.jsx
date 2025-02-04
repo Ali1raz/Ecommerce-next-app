@@ -13,7 +13,7 @@ const links = [
     {
         id: 2,
         label: "About",
-        href: "/about",
+        href: "/about-us",
     },
     {
         id: 3,
