@@ -1,7 +1,7 @@
-import ProductDetails from "../../components/ProductDetails";
 import Link from "next/link";
 import {prisma} from "../../../lib/prisma";
 import {Button} from "../../../components/ui/button";
+import ProductDetails from "../../../components/ProductDetails";
 
 export default async function ProductPage({params}) {
     const {id} = await params;

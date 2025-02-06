@@ -1,51 +1,77 @@
-'use server'
+"use server";
 
 import {getKindeServerSession} from "@kinde-oss/kinde-auth-nextjs/server";
 import {prisma} from "@/lib/prisma";
 import {redirect} from "next/navigation";
+import {revalidatePath} from "next/cache";
 
-export async function findOrCreateUser() {
-    const {getUser} = getKindeServerSession();
+// export async function findOrCreateUser() {
+//     const {getUser} = getKindeServerSession();
+//     const user = await getUser();
+
+//     if (!user?.id || !user?.email || !user?.given_name) {
+//         console.log("Invalid user session. Missing required fields.");
+//     }
+//     try {
+//         let existingUser = await prisma.user.findUnique({
+//             where: {email: user?.email}
+//         })
+
+//         if (!existingUser) {
+//             console.log("new user created ...");
+//             existingUser = await prisma.user.create({
+//                 data: {
+//                     id: user.id,
+//                     name: user?.given_name,
+//                     email: user?.email,
+//                     avatar: user?.picture || '',
+//                 }
+//             })
+//         } else {
+//             console.log("User already exists in db");
+//         }
+//         return existingUser;
+//     } catch (error) {
+//         console.log('failed to add user to db: ', error);
+//     }
+// }
+export async function login_and_add_to_db() {
+    const { isAuthenticated, getUser } = getKindeServerSession();
+    if (!(await isAuthenticated())) {
+        redirect("api/auth/login");
+    }
     const user = await getUser();
-
-    if (!user?.id || !user?.email || !user?.given_name) {
-        console.log("Invalid user session. Missing required fields.");
+    if (!user) {
+        console.log("User not found");
     }
-    try {
-        let existingUser = await prisma.user.findUnique({
-            where: {email: user?.email}
-        })
-
-        if (!existingUser) {
-            console.log("new user created ...");
-            existingUser = await prisma.user.create({
-                data: {
-                    id: user.id,
-                    name: user?.given_name,
-                    email: user?.email,
-                    avatar: user?.picture || '',
-                }
-            })
-        } else {
-            console.log("User already exists in db");
-        }
+    const existingUser = await prisma.user.findUnique({
+        where: { id: user.id },
+    });
+    if (existingUser) {
+        console.log("User already exists");
         return existingUser;
-    } catch (error) {
-        console.log('failed to add user to db: ', error);
     }
+    console.log("User not exists");
+    return (await prisma.user.create({
+        data: {
+            name: user.given_name,
+            avatar: user.picture,
+            email: user.email,
+            id: user.id,
+        },
+    }))
 }
-
 
 export async function get_all_products(query?: string) {
     let a = await prisma.product.findMany({
         where: {
             stock_quantity: {
-                gt: 0
-            }
+                gt: 0,
+            },
         },
         orderBy: {
-            created_at: "desc"
-        }
+            created_at: "desc",
+        },
     });
 
     if (query) {
@@ -54,13 +80,13 @@ export async function get_all_products(query?: string) {
                 OR: [
                     {name: {contains: query}},
                     {description: {contains: query}},
-                ]
-            }
+                ],
+            },
         });
-        console.log('searched for:', query);
+        console.log("searched for:", query);
     }
 
-    return a
+    return a;
 }
 
 export async function add_new_product(
@@ -70,11 +96,10 @@ export async function add_new_product(
     categories: string,
     stock_quantity: string
 ) {
-
     // authentication check
     const {isAuthenticated} = getKindeServerSession();
     if (!(await isAuthenticated())) {
-        redirect('api/auth/login');
+        redirect("api/auth/login");
     }
 
     await prisma.product.create({
@@ -84,47 +109,61 @@ export async function add_new_product(
             rating: 0,
             price: parseFloat(price),
             stock_quantity: parseInt(stock_quantity),
-        }
-    })
-    redirect("/")
+        },
+    });
+    redirect("/");
+}
+
+export async function delete_product(id: string) {
+    if (!id) {
+        console.log("no id provided");
+    }
+    const deleted_product = await prisma.product.delete({
+        where: {
+            id,
+        },
+    });
+console.log(deleted_product);
+    revalidatePath('/');
 }
 
 export async function add_to_cart(id: string, quantity: number = 1) {
     const {isAuthenticated, getUser} = getKindeServerSession();
     if (!(await isAuthenticated())) {
-        redirect('api/auth/login');
+        redirect("api/auth/login");
     }
     const user = await getUser();
 
     try {
         let cart = await prisma.cart.findUnique({where: {user_id: user.id}});
-        console.log('finding cart for: ', user.given_name);
+        console.log("finding cart for: ", user.given_name);
         if (!cart) {
-            console.log('creating new cart')
+            console.log("creating new cart");
             cart = await prisma.cart.create({
                 data: {
                     user_id: user.id,
-                }
-            })
+                },
+            });
         }
 
         const existingItem = await prisma.cartItem.findUnique({
             where: {
                 cart_id_product_id: {
                     cart_id: cart.id,
-                    product_id: id
-                }
-            }
+                    product_id: id,
+                },
+            },
         });
 
-        const existing_stock: { stock_quantity: number } = await prisma.product.findUnique({
-            where: {
-                id: id
-            },
-            select: {
-                stock_quantity: true
-            }
-        })
+        const existing_stock: { stock_quantity: number } =
+            await prisma.product.findUnique({
+                where: {
+                    id: id,
+                },
+                select: {
+                    stock_quantity: true,
+                },
+            });
         if (quantity <= existing_stock.stock_quantity) {
             // await prisma.product.update({
             //     where: {
@@ -136,9 +175,9 @@ export async function add_to_cart(id: string, quantity: number = 1) {
             //         }
             //     },
             // })
-            console.log('existing stock was enough as u demanded ...!');
+            console.log("existing stock was enough as u demanded ...!");
         } else {
-            console.log('existing stock is < u demanded ...!');
+            console.log("existing stock is < u demanded ...!");
             return {success: false};
         }
 
@@ -148,17 +187,17 @@ export async function add_to_cart(id: string, quantity: number = 1) {
                     cart_id: cart.id,
                     product_id: id,
                     quantity,
-                }
-            })
+                },
+            });
         } else {
             await prisma.cartItem.update({
                 where: {
-                    id: existingItem.id
+                    id: existingItem.id,
                 },
                 data: {
                     quantity: existingItem.quantity + quantity,
-                }
-            })
+                },
+            });
         }
         return {success: true};
     } catch (error) {
@@ -172,7 +211,7 @@ export async function remove_product_from_cart(id: string) {
         await prisma.cartItem.delete({where: {id}});
         return {success: true};
     } catch (error) {
-        console.log('Error in remoeving product from cart:', error);
+        console.log("Error in remoeving product from cart:", error);
         return {success: false};
     }
 }
@@ -186,15 +225,15 @@ export async function get_cart_items() {
             where: {user_id: user.id},
             include: {
                 items: {
-                    include: {product: true}
-                }
-            }
-        })
+                    include: {product: true},
+                },
+            },
+        });
 
         if (!cart) {
-            return {items: []}
+            return {items: []};
         }
-        return cart.items?.map(item => ({
+        return cart.items?.map((item) => ({
             id: item.id,
             product_id: item.product.id,
             name: item.product.name,
@@ -202,20 +241,18 @@ export async function get_cart_items() {
             price: item.product.price,
             quantity: item.quantity,
             total: item.quantity * item.product.price,
-        }))
+        }));
     } catch (error) {
-        console.log('Error getting cart items: ', error)
+        console.log("Error getting cart items: ", error);
         return [];
     }
 }
 
 export async function get_total_bill() {
-    const {getUser} = getKindeServerSession();
-    const user = await getUser();
     try {
         const cartItemsSummary = await prisma.cartItem.groupBy({
-            by: ['product_id'],
-            _sum: {quantity: true}
+            by: ["product_id"],
+            _sum: {quantity: true},
         });
 
         const cart_with_product_details = await Promise.all(
@@ -227,16 +264,16 @@ export async function get_total_bill() {
                     select: {
                         name: true,
                         price: true,
-                    }
+                    },
                 });
                 return {
                     id: item.product_id,
                     name: product?.name,
                     price_per_item: product?.price,
-                    total_quantity: item._sum.quantity
-                }
+                    total_quantity: item._sum.quantity,
+                };
             })
-        )
+        );
 
         // const cartItems = await prisma.cart.findMany({
         //     where: {
@@ -258,8 +295,7 @@ export async function get_total_bill() {
         //     }
         // })\
 
-
-        console.log('finding cart total bill ');
+        console.log("finding cart total bill ");
         return cart_with_product_details;
     } catch (error) {
         console.log("error getting total bill", error);

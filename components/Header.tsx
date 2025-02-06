@@ -6,10 +6,11 @@ import {LogoutLink} from "@kinde-oss/kinde-auth-nextjs/components";
 import {useKindeBrowserClient} from "@kinde-oss/kinde-auth-nextjs";
 import {
     Avatar,
-    AvatarFallback,
     AvatarImage,
 } from "@/components/ui/avatar"
 import {ShoppingCart} from "lucide-react";
+import {Button} from "@/components/ui/button";
+import {redirect} from "next/navigation";
 
 
 export default function Header({}) {
@@ -29,14 +30,18 @@ export default function Header({}) {
                         <span className='text-xl'><ShoppingCart/></span>
                         <span className='sm:block hidden'>Cart</span>
                     </Link>
-                    {user && (<LogoutLink>Logout</LogoutLink>)}
-                    {user && (
-                        <Avatar>
-                            <AvatarImage src={user?.picture || ''} alt='user'
-                                         className='rounded-full '
-                                         width={25} height={25}/>
-                            <AvatarFallback>{user?.given_name[0] || 'a'}</AvatarFallback>
-                        </Avatar>
+                    {user ? (
+                        <>
+                            <Avatar>
+                                <AvatarImage src={user?.picture || ''} alt='user'
+                                             className='rounded-full '
+                                             width={15} height={15}/>
+                            </Avatar>
+                        </>
+                    ): (
+                        <>
+                            <Button variant='secondary' className='rounded-none' onClick={() => {redirect('api/auth/login')}}>Login/Sign Up</Button>
+                        </>
                     )}
                 </div>
             </div>
