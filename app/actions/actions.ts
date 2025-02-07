@@ -115,15 +115,15 @@ export async function add_new_product(
 }
 
 export async function delete_product(id: string) {
+
     if (!id) {
         console.log("no id provided");
     }
-    const deleted_product = await prisma.product.delete({
+    await prisma.product.delete({
         where: {
             id,
         },
     });
-console.log(deleted_product);
     revalidatePath('/');
 }
 

@@ -35,12 +35,9 @@ export default function ProductCard({product}: { product: Product }) {
                     </p>
                     <p>{rating} ⭐</p>
                 </div>
-                <div className='flex items-center justify-between mt-2 '>
-                    <Button variant='secondary' asChild className=' px-5 rounded-none py-1'>
-                        <Link href={`/products/${id}`}>View</Link>
-                    </Button>
-                    <DeleteProductButton productId={id}/>
-                </div>
+                <Button variant='secondary' asChild className=' px-5 rounded-none py-1 mt-2'>
+                    <Link href={`/products/${id}`}>View</Link>
+                </Button>
                 <Badge variant='secondary'
                        className='block text-white px-3 py-1 mt-4 bg-slate-700/80 text-xs w-fit'>{formatDate(created_at)}</Badge>
             </div>

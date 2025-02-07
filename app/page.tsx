@@ -1,4 +1,3 @@
-import Link from "next/link";
 import SearchForm from "@/components/SearchForm";
 import {get_all_products} from "@/app/actions/actions";
 import ProductsList from "@/components/ProductsList";
@@ -8,6 +7,7 @@ export default async function Home({
 }: {
   searchParams: Promise<{ query?: string }>;
 }) {
+
 
   const { query } = await searchParams;
   const products = await get_all_products(query);
