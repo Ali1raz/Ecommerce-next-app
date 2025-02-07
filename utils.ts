@@ -15,3 +15,12 @@ export type Product = {
     description: string;
     created_at: string;
 };
+
+export type TCartProduct = {
+    id: string;
+    name: string;
+    description: string;
+    price: number;
+    quantity: number;
+    total: number;
+};

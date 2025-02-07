@@ -1,23 +1,11 @@
 import { get_cart_items } from "../actions/actions";
 import CartProduct from "../../components/CartProduct";
-import { Product } from "@/utils";
+import {TCartProduct} from "@/utils";
 import Link from "next/link";
-import {getKindeServerSession} from "@kinde-oss/kinde-auth-nextjs/server";
 
 export default async function CartPage() {
-  const {getUser} = getKindeServerSession();
-  const user = getUser();
 
-  if (!user) {
-    return (
-        <div>
-          <h2 className='text-center mt-4 text-xl text-amber-600'>You need to create account to view this page.</h2>
-          <Link href="/api/auth/login">Login/Sign Up</Link>
-        </div>
-    )
-  }
-
-  let cartItems: Product[] = [];
+  let cartItems: TCartProduct[] = [];
 
   try {
     const response = await get_cart_items();

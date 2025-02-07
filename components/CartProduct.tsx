@@ -2,17 +2,10 @@ import Link from "next/link";
 import React from "react";
 import RemoveFromCartButton from "@/components/RemoveFromCartButton";
 import { Button } from "@/components/ui/button";
+import {TCartProduct} from "@/utils";
 
-type CartProduct = {
-  id: string;
-  name: string;
-  description: string;
-  price: number;
-  quantity: number;
-  total: number;
-};
 
-export default function CartProduct({ product }: { product: CartProduct }) {
+export default function CartProduct({ product }: { product: TCartProduct }) {
   const { name, id, quantity, total, price, description } = product;
   return (
     <div className="flex flex-col  shadow-sm bg-gray-800 text-white">

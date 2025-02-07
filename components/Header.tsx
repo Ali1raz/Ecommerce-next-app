@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import NavBar from "./NavBar";
-import {LogoutLink} from "@kinde-oss/kinde-auth-nextjs/components";
+import {LoginLink} from "@kinde-oss/kinde-auth-nextjs/components";
 import {useKindeBrowserClient} from "@kinde-oss/kinde-auth-nextjs";
 import {
     Avatar,
@@ -10,8 +10,6 @@ import {
 } from "@/components/ui/avatar"
 import {ShoppingCart} from "lucide-react";
 import {Button} from "@/components/ui/button";
-import {redirect} from "next/navigation";
-
 
 export default function Header({}) {
     const {getUser} = useKindeBrowserClient();
@@ -40,7 +38,7 @@ export default function Header({}) {
                         </>
                     ): (
                         <>
-                            <Button variant='secondary' className='rounded-none' onClick={() => {redirect('api/auth/login')}}>Login/Sign Up</Button>
+                            <Button variant='secondary' className='rounded-none'><LoginLink>Login/Sign Up</LoginLink></Button>
                         </>
                     )}
                 </div>

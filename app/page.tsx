@@ -1,6 +1,7 @@
 import SearchForm from "@/components/SearchForm";
-import {get_all_products} from "@/app/actions/actions";
+import {find_or_save_user_to_db, get_all_products} from "@/app/actions/actions";
 import ProductsList from "@/components/ProductsList";
+import {getKindeServerSession} from "@kinde-oss/kinde-auth-nextjs/server";
 
 export default async function Home({
   searchParams,
@@ -8,9 +9,12 @@ export default async function Home({
   searchParams: Promise<{ query?: string }>;
 }) {
 
-
   const { query } = await searchParams;
   const products = await get_all_products(query);
+
+  const {isAuthenticated} = getKindeServerSession();
+  if (await isAuthenticated()) await find_or_save_user_to_db()
+
   return (
     <>
       <div className="bg-pink-500 border-b-2 border-transparent">

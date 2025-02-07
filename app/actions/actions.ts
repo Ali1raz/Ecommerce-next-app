@@ -5,61 +5,31 @@ import {prisma} from "@/lib/prisma";
 import {redirect} from "next/navigation";
 import {revalidatePath} from "next/cache";
 
-// export async function findOrCreateUser() {
-//     const {getUser} = getKindeServerSession();
-//     const user = await getUser();
-
-//     if (!user?.id || !user?.email || !user?.given_name) {
-//         console.log("Invalid user session. Missing required fields.");
-//     }
-//     try {
-//         let existingUser = await prisma.user.findUnique({
-//             where: {email: user?.email}
-//         })
-
-//         if (!existingUser) {
-//             console.log("new user created ...");
-//             existingUser = await prisma.user.create({
-//                 data: {
-//                     id: user.id,
-//                     name: user?.given_name,
-//                     email: user?.email,
-//                     avatar: user?.picture || '',
-//                 }
-//             })
-//         } else {
-//             console.log("User already exists in db");
-//         }
-//         return existingUser;
-//     } catch (error) {
-//         console.log('failed to add user to db: ', error);
-//     }
-// }
-export async function login_and_add_to_db() {
-    const { isAuthenticated, getUser } = getKindeServerSession();
-    if (!(await isAuthenticated())) {
-        redirect("api/auth/login");
-    }
+export async function find_or_save_user_to_db() {
+    const {getUser} = getKindeServerSession();
     const user = await getUser();
-    if (!user) {
-        console.log("User not found");
+    if (!user || !user.id) {
+        console.log("login first")
+        // redirect("api/auth/login");
+    } else {
+        console.log('adding user to the db...', user.given_name);
+        const new_added_user = await prisma.user.upsert({
+            where: {id: user.id},
+            update: {
+                name: `${user.given_name} ${user.family_name}`,
+                email: user.email as string,
+                avatar: user.picture as string
+            },
+            create: {
+                id: user.id,
+                name: `${user.given_name} ${user.family_name}`,
+                email: user.email as string,
+                avatar: user.picture as string
+            },
+        })
+        console.log('new user added:', new_added_user.name);
+        return new_added_user;
     }
-    const existingUser = await prisma.user.findUnique({
-        where: { id: user.id },
-    });
-    if (existingUser) {
-        console.log("User already exists");
-        return existingUser;
-    }
-    console.log("User not exists");
-    return (await prisma.user.create({
-        data: {
-            name: user.given_name,
-            avatar: user.picture,
-            email: user.email,
-            id: user.id,
-        },
-    }))
 }
 
 export async function get_all_products(query?: string) {
