@@ -6,7 +6,7 @@ export function formatDate(date: string) {
     })
 }
 
-export type Product = {
+export type TProductProps = {
     id: string;
     name: string;
     stock_quantity: number;

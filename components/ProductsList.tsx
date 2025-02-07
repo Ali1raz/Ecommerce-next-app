@@ -1,7 +1,8 @@
 import ProductCard from './ProductCard';
+import {TProductProps} from "@/utils";
 
 
-export default async function ProductsList({data}) {
+export default async function ProductsList({data}: {data: TProductProps[]}) {
     const products = await data;
     return (
         <div

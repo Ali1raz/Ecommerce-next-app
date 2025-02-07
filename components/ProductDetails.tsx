@@ -1,8 +1,8 @@
 import AddToCartButton from "./AddToCartButton";
-import {Product} from "@/utils";
+import {TProductProps} from "@/utils";
 
 
-export default function ProductDetails({product}: { product: Product }) {
+export default function ProductDetails({product}: { product: TProductProps }) {
     const {id, name, description, price, stock_quantity, rating} = product;
 
     return (
