@@ -32,45 +32,50 @@ export async function find_or_save_user_to_db() {
     }
 }
 
-export async function get_all_products(query?: string) {
-    let a = await prisma.product.findMany({
+export async function getUserbyId(id: string) {
+    return (await prisma.user.findUnique({
+        where: {id},
+        select: {name: true, avatar: true}
+    }))
+}
+
+export async function get_all_products(query?: string, userId?: string) {
+    let products_found = await prisma.product.findMany({
         where: {
-            stock_quantity: {
-                gt: 0,
-            },
+            stock_quantity: {gt: 0,},
         },
-        orderBy: {
-            created_at: "desc",
-        },
+        orderBy: {created_at: "desc",},
     });
 
-    if (query) {
-        a = await prisma.product.findMany({
-            where: {
-                OR: [
-                    {name: {contains: query}},
-                    {description: {contains: query}},
-                ],
-            },
-        });
-        console.log("searched for:", query);
+    if (userId) {
+        products_found = await prisma.product.findMany({where: {user_id : userId}});
+
+        return products_found;
     }
 
-    return a;
+    if (query) {
+        products_found = await prisma.product.findMany({
+            where: {
+                OR: [
+                    {name: {contains: query, mode: 'insensitive'},},
+                    {description: {contains: query, mode: 'insensitive'},},
+                ],
+            },
+            orderBy: {created_at: "desc",},
+        });
+    }
+    return products_found;
 }
 
 export async function add_new_product(
     product_name: string,
     product_description: string,
     price: string,
-    categories: string,
+    categories: string, // not using still
     stock_quantity: string
 ) {
-    // authentication check
-    const {isAuthenticated} = getKindeServerSession();
-    if (!(await isAuthenticated())) {
-        redirect("api/auth/login");
-    }
+    // authorization check
+    const user = await find_or_save_user_to_db();
 
     await prisma.product.create({
         data: {
@@ -79,6 +84,7 @@ export async function add_new_product(
             rating: 0,
             price: parseFloat(price),
             stock_quantity: parseInt(stock_quantity),
+            user_id: user?.id
         },
     });
     redirect("/");

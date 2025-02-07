@@ -16,12 +16,13 @@ datasource db {
 // models:
 
 model User {
-  id         String   @id @default(uuid())
-  name       String   @unique
-  email      String   @unique
+  id         String    @id @default(uuid())
+  name       String    @unique
+  email      String    @unique
   avatar     String
-  created_at DateTime @default(now())
+  created_at DateTime  @default(now())
   cart       Cart?
+  products   Product[]
 }
 
 model Product {
@@ -33,6 +34,9 @@ model Product {
   stock_quantity Int        @default(0)
   created_at     DateTime   @default(now())
   cart_items     CartItem[]
+
+  user_id String
+  user    User   @relation(fields: [user_id], references: [id], onDelete: Cascade)
 }
 
 model Cart {

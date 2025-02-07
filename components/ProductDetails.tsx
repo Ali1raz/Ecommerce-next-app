@@ -1,9 +1,13 @@
 import AddToCartButton from "./AddToCartButton";
 import {TProductProps} from "@/utils";
+import {getUserbyId} from "@/app/actions/actions";
+import {Avatar, AvatarImage} from "@/components/ui/avatar";
+import Link from "next/link";
 
 
-export default function ProductDetails({product}: { product: TProductProps }) {
-    const {id, name, description, price, stock_quantity, rating} = product;
+export default async function ProductDetails({product}: { product: TProductProps }) {
+    const {id, user_id, name, description, price, stock_quantity, rating} = product;
+    const product_owner = await getUserbyId(user_id);
 
     return (
         <div className='max-w-2xl sm:mx-auto mx-5'>
@@ -13,6 +17,16 @@ export default function ProductDetails({product}: { product: TProductProps }) {
             <div className="mt-6">
                 <p className='text-neutral-600'>{description}</p>
                 <p>{name}</p>
+                <div className='border p-2 gap-3 text-gray-900 border-gray-700 flex items-center'>
+                    <Link href={`/user/${user_id}`}>
+                        <Avatar>
+                        <AvatarImage src={product_owner?.avatar || ''} alt='user'
+                                     className='rounded-full '
+                                     width={15} height={15}/>
+                    </Avatar>
+                    </Link>
+                    <p><Link href={`/user/${user_id}`}>{product_owner?.name}</Link></p>
+                </div>
                 <p className="font-bold mt-2">Rs {(price).toFixed(2)}</p>
                 <div className='my-1 flex items-center justify-start gap-2'>
                     <p className='text-bold'>Rating:</p><span>{rating}</span>

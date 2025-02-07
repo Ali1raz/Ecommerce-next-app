@@ -36,7 +36,7 @@ export default async function Home({
         </p>
 
         {products.length !== 0 ? (<ProductsList data={products}/>): (
-            <h1 className='text-center text-2xl mt-auto'>No products found.</h1>
+            <h1 className='text-center text-2xl mt-8'>No products found.</h1>
         )}
       </div>
     </>

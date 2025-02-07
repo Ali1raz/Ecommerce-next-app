@@ -1,13 +1,10 @@
 import React from "react";
-import Image from "next/image";
 import Link from "next/link";
-import {formatDate, Product} from "@/utils";
-import {Badge} from "@/components/ui/badge"
+import {Badge} from "@/components/ui/badge";
 import {Button} from "@/components/ui/button";
-import DeleteProductButton from "@/components/DeleteProductButton";
+import {formatDate, TProductProps} from "@/utils";
 
-
-export default function ProductCard({product}: { product: Product }) {
+export default function ProductCard({product}: { product: TProductProps}) {
     const {
         name,
         id,
