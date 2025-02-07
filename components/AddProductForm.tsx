@@ -6,6 +6,7 @@ import { createProduct, FormState } from "@/app/products/actions";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Loader2 } from "lucide-react";
+import {Button} from "@/components/ui/button";
 
 export default function AddProductForm() {
   const initialState: FormState = {
@@ -20,11 +21,11 @@ export default function AddProductForm() {
   return (
     <Form
       action={formAction}
-      className="flex flex-col gap-y-3  w-[300px] mx-auto p-4 text-black"
+      className="flex flex-col gap-y-3  w-[350px] mx-auto p-4 text-black"
     >
       <div className="flex flex-col w-full gap-2">
         <div>
-          <Label htmlFor="product_name" className=" ">
+          <Label htmlFor="product_name">
             Product Name
           </Label>
           {state?.errors.product_name && (
@@ -38,12 +39,12 @@ export default function AddProductForm() {
           id="product_name"
           type="text"
           placeholder="T-shirt"
-          className="px-3 py-1 border-blue-500 border-b-[3px]"
+          className="px-3 py-1 border-blue-500 border-b-[3px] rounded-none"
         />
       </div>
       <div className="flex flex-col w-full gap-2">
         <div>
-          <Label htmlFor="product_description" className=" ">
+          <Label htmlFor="product_description">
             Product Description
           </Label>
           {state?.errors.product_description && (
@@ -56,7 +57,7 @@ export default function AddProductForm() {
           name="product_description"
           id="product_description"
           placeholder="size, color, use ..."
-          className="px-3 py-1  border-blue-500 border-b-[3px]"
+          className="px-3 py-1 border-blue-500 border-b-[3px] rounded-none"
         />
       </div>
       <div className="flex flex-col w-full gap-2">
@@ -73,7 +74,7 @@ export default function AddProductForm() {
           id="categories"
           type="text"
           placeholder="fashion, clothing, kids ..."
-          className="px-3 py-1 border-blue-500 border-b-[3px]"
+          className="px-3 py-1 border-blue-500 border-b-[3px] rounded-none"
         />
       </div>
       <div className="flex flex-col w-full gap-2 ">
@@ -91,12 +92,12 @@ export default function AddProductForm() {
           type="number"
           placeholder="50"
           min={1}
-          className="px-3 py-1 border-blue-500 border-b-[3px]"
+          className="px-3 py-1 border-blue-500 border-b-[3px] rounded-none"
         />
       </div>
       <div className="flex flex-col w-full gap-2 ">
         <div>
-          <Label htmlFor="stock_quantity" className=" ">
+          <Label htmlFor="stock_quantity">
             Stock Quantity
           </Label>
           {state?.errors.stock_quantity && (
@@ -111,16 +112,16 @@ export default function AddProductForm() {
           min={1}
           type="number"
           placeholder="Stock Quantity"
-          className="px-3 py-1 border-blue-500 border-b-[3px]"
+          className="px-3 py-1 border-blue-500 border-b-[3px] rounded-none"
         />
       </div>
-      <button
+      <Button
         type="submit"
         disabled={pending}
-        className="mt-3 w-full text-white bg-blue-800 py-1 px-4 disabled:bg-gray-500"
+        className="mt-3 w-full text-white rounded-none bg-blue-800 text-center disabled:bg-gray-500"
       >
-        {pending ? <Loader2 className="animate-spin h-5 w-5" /> : "Add Product"}
-      </button>
+        {pending ? <Loader2 className="animate-spin h-full" /> : "Add Product"}
+      </Button>
     </Form>
   );
 }
