@@ -36,11 +36,7 @@ export default function RemoveFromCartButton({ id }: { id: string }) {
       disabled={loading}
       className="px-3 rounded-none disabled:bg-gray-400"
     >
-      {loading ? (
-          <span><Loader2 className='animate-spin h-5 w-5 '/> Removing...</span>
-      ): (
-          <span>Remove</span>
-      )}
+      {loading ? <Loader2 className='animate-spin h-5 w-5 '/>: 'Remove'}
     </Button>
   );
 }
