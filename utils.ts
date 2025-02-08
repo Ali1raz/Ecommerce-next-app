@@ -6,6 +6,10 @@ export function formatDate(date: string) {
     })
 }
 
+export function generateSlug(name: string): string {
+    return name.toLowerCase().replace(/\s+/g, '-').replace(/[^\w-]+/g, '');
+}
+
 export type TProductProps = {
     id: string;
     name: string;
