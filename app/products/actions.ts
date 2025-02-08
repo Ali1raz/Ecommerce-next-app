@@ -13,7 +13,7 @@ export type FormState = {
     errors: Errors;
 }
 
-export async function createProduct(prevState: FormState, formData: FormData) {
+export async function createProduct(prevState: FormState | undefined, formData: FormData) {
     const product_name = formData.get('product_name') as string;
     const product_description = formData.get('product_description') as string;
     const price = formData.get('price') as string;
