@@ -10,7 +10,7 @@ export async function find_or_save_user_to_db() {
     const user = await getUser();
     if (!user || !user.id) {
         console.log("login first")
-        // redirect("api/auth/login");
+        redirect("/api/auth/login");
     } else {
         console.log('adding user to the db...', user.given_name);
         const new_added_user = await prisma.user.upsert({

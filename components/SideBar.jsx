@@ -12,27 +12,31 @@ const links = [
         id: 1,
         label: "Home",
         href: "/",
+        public: true,
     },
     {
         id: 2,
         label: "About",
         href: "/about-us",
+        public: true,
     },
     {
         id: 3,
         label: "Cart",
         href: "/cart",
+        public: false,
     },
     {
         id: 4,
         label: "Add New Products",
         href: "/products/new",
+        public: false,
     },
 
 ]
 
 export default function SideBar({isOpen, onClose}) {
-    const {user} = useKindeBrowserClient()
+    const {user, isAuthenticated} = useKindeBrowserClient();
     return (
         <div
             className={`bg-gray-900 z-10 sm:min-w-56 w-full max-w-72 transition-all duration-300 absolute top-0 h-screen p-4 ${isOpen ? 'left-0 shadow-md' : '-left-[150%]'}`}>
@@ -59,15 +63,16 @@ export default function SideBar({isOpen, onClose}) {
             </div>
             <div className='flex flex-col mt-8 gap-6'>
                 <div className='flex flex-col gap-2'>
-                    {links.map((link) => (
-                        <Link href={link.href} key={link.id}
-                              className='hover:bg-slate-700 text-sm p-2 transition-all duration-75'>
-                            {link.label}
-                        </Link>
+                    {links.filter(link => link.public || isAuthenticated)
+                        .map((link) => (
+                            <Link href={link.href} key={link.id}
+                                  className='hover:bg-slate-700 text-sm p-2 transition-all duration-75'>
+                                {link.label}
+                            </Link>
                     ))}
                 </div>
 
-                {user && <Button asChild variant='destructive' className='rounded-none '><LogoutLink>Logout</LogoutLink></Button>}
+                {isAuthenticated && <Button asChild variant='destructive' className='rounded-none '><LogoutLink>Logout</LogoutLink></Button>}
             </div>
         </div>
     )
