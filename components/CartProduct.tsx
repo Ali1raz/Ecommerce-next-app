@@ -6,7 +6,7 @@ import {TCartProduct} from "@/utils";
 
 
 export default function CartProduct({ product }: { product: TCartProduct }) {
-  const { name, id, quantity, total, price, description } = product;
+  const { name, product_id, id, quantity, total, price, description } = product;
   return (
     <div className="flex flex-col  shadow-sm bg-gray-800 text-white">
       <div className="flex items-center justify-center min-w-[157px] min-h-[180px] bg-slate-300 relative">
@@ -24,7 +24,7 @@ export default function CartProduct({ product }: { product: TCartProduct }) {
         </p>
         <div className="flex justify-between items-center mt-3">
             <Button variant='secondary' asChild className=' px-5 rounded-none py-1'>
-                <Link href={`/products/${id}`}>View</Link>
+                <Link href={`/products/${product_id}`}>View</Link>
             </Button>
           <RemoveFromCartButton id={id} />
         </div>

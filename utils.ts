@@ -30,6 +30,7 @@ export type TProductProps = {
 
 export type TCartProduct = {
     id: string;
+    product_id: string;
     name: string;
     description: string;
     price: number;
