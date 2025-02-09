@@ -14,17 +14,17 @@ export async function find_or_save_user_to_db() {
     } else {
         console.log('adding user to the db...', user.given_name);
         const new_added_user = await prisma.user.upsert({
-            where: {id: user.id},
+            where: {email: user?.email},
             update: {
-                name: `${user.given_name} ${user.family_name}`,
-                email: user.email as string,
-                avatar: user.picture as string
+                name: `${user.given_name ?? ""} ${user.family_name ?? ""}`.trim(),
+                email: user.email ?? "",
+                avatar: user.picture ?? ""
             },
             create: {
                 id: user.id,
-                name: `${user.given_name} ${user.family_name}`,
-                email: user.email as string,
-                avatar: user.picture as string
+                name: `${user.given_name ?? ""} ${user.family_name ?? ""}`.trim(),
+                email: user.email ?? "",
+                avatar: user.picture ?? ""
             },
         })
         console.log('new user added:', new_added_user.name);
@@ -40,20 +40,12 @@ export async function getUserbyId(id: string) {
 }
 
 export async function get_all_products(query?: string, userId?: string) {
-    let products_found = await prisma.product.findMany({
-        where: {
-            stock_quantity: {gt: 0,},
-        },
-        orderBy: {created_at: "desc",},
-    });
-
+    let products_found;
     if (userId) {
         products_found = await prisma.product.findMany({where: {user_id : userId}});
 
         return products_found;
-    }
-
-    if (query) {
+    } else if (query) {
         products_found = await prisma.product.findMany({
             where: {
                 OR: [
@@ -61,6 +53,11 @@ export async function get_all_products(query?: string, userId?: string) {
                     {description: {contains: query, mode: 'insensitive'},},
                 ],
             },
+            orderBy: {created_at: "desc",},
+        });
+    } else {
+        products_found = await prisma.product.findMany({
+            where: {stock_quantity: {gt: 0,}},
             orderBy: {created_at: "desc",},
         });
     }
@@ -104,21 +101,24 @@ export async function delete_product(id: string) {
 }
 
 export async function add_to_cart(id: string, quantity: number = 1) {
-    const {isAuthenticated, getUser} = getKindeServerSession();
+    const { isAuthenticated, getUser } = getKindeServerSession();
+
     if (!(await isAuthenticated())) {
-        redirect("api/auth/login");
+        return redirect("/api/auth/login");
     }
+
     const user = await getUser();
+    if (!user || !user.id) {
+        return { success: false, message: "invalid user data." };
+    }
 
     try {
-        let cart = await prisma.cart.findUnique({where: {user_id: user.id}});
-        console.log("finding cart for: ", user.given_name);
+        let cart = await prisma.cart.findUnique({ where: { user_id: user.id } });
+
         if (!cart) {
-            console.log("creating new cart");
+            console.log("creating a new cart");
             cart = await prisma.cart.create({
-                data: {
-                    user_id: user.id,
-                },
+                data: { user_id: user.id },
             });
         }
 
@@ -131,33 +131,21 @@ export async function add_to_cart(id: string, quantity: number = 1) {
             },
         });
 
-        const existing_stock: { stock_quantity: number } =
-            await prisma.product.findUnique({
-                where: {
-                    id: id,
-                },
-                select: {
-                    stock_quantity: true,
-                },
-            });
-        if (quantity <= existing_stock.stock_quantity) {
-            // await prisma.product.update({
-            //     where: {
-            //         id: id,
-            //     },
-            //     data: {
-            //         stock_quantity: {
-            //             decrement: quantity,
-            //         }
-            //     },
-            // })
-            console.log("existing stock was enough as u demanded ...!");
-        } else {
-            console.log("existing stock is < u demanded ...!");
-            return {success: false};
+        const product = await prisma.product.findUnique({
+            where: { id },
+            select: { stock_quantity: true },
+        });
+        if (!product) {
+            return { success: false, message: "Product not found" };
+        }
+        console.log("Product stock available:", product.stock_quantity);
+
+        if (quantity > product.stock_quantity) {
+            return { success: false, message: "Not enough stock" };
         }
 
         if (!existingItem) {
+            console.log("Adding new item to cart.");
             await prisma.cartItem.create({
                 data: {
                     cart_id: cart.id,
@@ -166,19 +154,17 @@ export async function add_to_cart(id: string, quantity: number = 1) {
                 },
             });
         } else {
+            console.log("existing item");
             await prisma.cartItem.update({
-                where: {
-                    id: existingItem.id,
-                },
-                data: {
-                    quantity: existingItem.quantity + quantity,
-                },
+                where: { id: existingItem.id },
+                data: { quantity: existingItem.quantity + quantity },
             });
         }
-        return {success: true};
+
+        console.log("added to cart.");
+        return { success: true, message: "Added to cart." };
     } catch (error) {
-        console.log(error);
-        return {success: false};
+        return { success: false, message: error.message || "An error occurred" };
     }
 }
 
