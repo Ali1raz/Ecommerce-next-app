@@ -13,7 +13,8 @@ export default async function ProductCard({product}: { product: TProductProps}) 
         price,
         rating,
         created_at,
-        stock_quantity
+        stock_quantity,
+        categories
     } = product;
 
     const {name: ownerName} = await getUserbyId(user_id);
@@ -37,7 +38,14 @@ export default async function ProductCard({product}: { product: TProductProps}) 
                     </p>
                     <p>{rating} ⭐</p>
                 </div>
-                <Button variant='link' className='text-gray-300 text-xs p-0 m-0' asChild><Link href={`/user/${user_id}`}>{ownerName}</Link></Button>
+                <div className='flex items-center gap-2'>
+                    {categories.map((category) => (
+                        <Badge variant='secondary' className=''
+                              key={category.category_id}>{category.category_name}</Badge>
+                    ))}
+                </div>
+                <Button variant='link' className='text-gray-300 text-xs p-0 m-0' asChild><Link
+                    href={`/user/${user_id}`}>{ownerName}</Link></Button>
                 <Badge variant='secondary'
                        className='block text-white px-3 py-1 mt-4 bg-slate-700/80 text-xs w-fit'>{formatDate(created_at)}</Badge>
             </div>

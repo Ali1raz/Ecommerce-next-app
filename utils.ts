@@ -6,6 +6,16 @@ export function formatDate(date: string) {
     })
 }
 
+export function generateSlug(name: string): string {
+    return name.toLowerCase().replace(/\s+/g, '-').replace(/[^\w-]+/g, '');
+}
+
+export type TCategory = {
+    id: string;
+    name: string;
+    slug: string;
+}
+
 export type TProductProps = {
     id: string;
     name: string;
@@ -15,6 +25,7 @@ export type TProductProps = {
     description: string;
     created_at: string;
     user_id: string;
+    categories: TCategory[];
 };
 
 export type TCartProduct = {
