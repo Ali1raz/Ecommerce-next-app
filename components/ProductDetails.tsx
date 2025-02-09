@@ -1,14 +1,14 @@
 import AddToCartButton from "./AddToCartButton";
-import {TProductProps} from "@/utils";
-import {getUserbyId} from "@/app/actions/actions";
+import {TCategory, TProductProps} from "@/utils";
+import {get_categories, getUserbyId} from "@/app/actions/actions";
 import {Avatar, AvatarImage} from "@/components/ui/avatar";
 import Link from "next/link";
-
+import {Badge} from "@/components/ui/badge";
 
 export default async function ProductDetails({product}: { product: TProductProps }) {
     const {id, user_id, name, description, price, stock_quantity, rating} = product;
     const product_owner = await getUserbyId(user_id);
-
+    const categories:TCategory[] = await get_categories(id);
     return (
         <div className='max-w-2xl sm:mx-auto mx-5'>
             <div className='w-full bg-gray-400 h-auto min-h-40 p-4 flex items-center justify-center'>
@@ -38,15 +38,14 @@ export default async function ProductDetails({product}: { product: TProductProps
                 <AddToCartButton productId={id} stock_quantity={stock_quantity}/>
             </div>
             <div className='mt-4 '>
-                <h3>Tags:</h3>
-                {/*<div className="mt-3 flex items-center justify-start gap-3">*/}
-
-                {/*    {keywords.map((kw, index) => {*/}
-                {/*        return <button*/}
-                {/*            className='bg-amber-300 text-black  hover:scale-105 transition-all duration-100 py-1 px-2 rounded-2xl'*/}
-                {/*            key={index}>{kw}</button>*/}
-                {/*    })}*/}
-                {/*</div>*/}
+                <h3>Categories:</h3>
+                <div className="mt-3 flex items-center justify-start gap-3">
+                    {categories.map((category) => {
+                        return <Badge variant='secondary' key={category.id}
+                            className='px-4 py-1 border-slate-400'
+                            >{category.name}</Badge>
+                    })}
+                </div>
             </div>
         </div>
     )

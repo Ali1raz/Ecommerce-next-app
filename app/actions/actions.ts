@@ -46,10 +46,11 @@ export async function get_all_products(query?: string, userId?: string) {
             stock_quantity: {gt: 0,},
         },
         orderBy: {created_at: "desc",},
+        include: {categories: {include: {category: true}}}
     });
 
     if (userId) {
-        products_found = await prisma.product.findMany({where: {user_id : userId}});
+        products_found = await prisma.product.findMany({where: {user_id : userId}, include: {categories: {include: {category: true}}}});
 
         return products_found;
     }
@@ -63,9 +64,19 @@ export async function get_all_products(query?: string, userId?: string) {
                 ],
             },
             orderBy: {created_at: "desc",},
+            include: {categories: {include: {category: true}}}
         });
     }
-    return products_found;
+    return products_found.map(product => {
+        return {
+            ...product,
+            categories: product.categories.map(categoryLink => ({
+                category_id: categoryLink.category.id,
+                category_name: categoryLink.category.name,
+                category_slug: categoryLink.category.slug,
+            }))
+        }
+    });
 }
 
 export async function add_new_product(
@@ -91,12 +102,12 @@ export async function add_new_product(
 
             categories: {
                 create: await Promise.all(
-                    category_slugs.map(async (slug) => {
+                    category_slugs.map(async (slug, index) => {
                         const category = await prisma.category.upsert({
                             where: {slug},
                             update: {},
                             create: {
-                                name: category_names[category_slugs.indexOf(slug)],
+                                name: category_names[index],
                                 slug
                             },
                         });
@@ -109,6 +120,28 @@ export async function add_new_product(
         },
     });
     redirect("/");
+}
+
+export async function get_categories(product_id?: string) {
+    let categories;
+    if (!product_id) {
+        categories = await prisma.category.findMany({
+            select: {id: true, name: true, slug: true},
+        });
+    } else {
+        const pc = await prisma.productCategoryLink.findMany({
+            where: {
+                product_id: product_id,
+            },
+            select: {
+                category: {
+                    select: {id: true, name: true, slug: true},
+                }
+            }
+        })
+        categories = pc.map(link => link.category)
+    }
+    return categories;
 }
 
 export async function delete_product(id: string) {
