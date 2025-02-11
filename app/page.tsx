@@ -2,15 +2,18 @@ import SearchForm from "@/components/SearchForm";
 import {find_or_save_user_to_db, get_all_products} from "@/app/actions/actions";
 import ProductsList from "@/components/ProductsList";
 import {getKindeServerSession} from "@kinde-oss/kinde-auth-nextjs/server";
+import Link from "next/link";
+import GoBackButton from "@/components/GoBackButton";
 
 export default async function Home({
   searchParams,
 }: {
-  searchParams: Promise<{ query?: string }>;
+  searchParams: Promise<{ query?: string, category?: string }>;
 }) {
 
-  const { query } = await searchParams;
-  const products = await get_all_products(query);
+  const { query, category } = await searchParams;
+  console.log(category, query);
+  const products = await get_all_products(query, category);
 
   const {isAuthenticated} = getKindeServerSession();
   if (await isAuthenticated()) await find_or_save_user_to_db()
@@ -32,7 +35,8 @@ export default async function Home({
       </div>
       <div className="container px-6 py-4 max-w-6xl mx-auto ">
         <p className="mb-4 font-bold text-2xl">
-          {query ? `Search results for "${query}"` : "All Products"}
+          {(query || category) && <GoBackButton label="Reset" />}
+          {(query || category) ? `Search results for "${query || category}"` : "All Products"}
         </p>
 
         {products.length !== 0 ? (<ProductsList data={products}/>): (

@@ -10,10 +10,15 @@ export function generateSlug(name: string): string {
     return name.toLowerCase().replace(/\s+/g, '-').replace(/[^\w-]+/g, '');
 }
 
-export type TCategory = {
-    id: string;
+export type TUser = {
+    avatar: string;
     name: string;
-    slug: string;
+    email?: string;
+}
+export type TCategory = {
+    id: string,
+    name: string,
+    slug: string,
 }
 
 export type TProductProps = {
@@ -23,9 +28,8 @@ export type TProductProps = {
     rating: number;
     price: number;
     description: string;
-    created_at: string;
+    created_at: Date;
     user_id: string;
-    categories: TCategory[];
 };
 
 export type TCartProduct = {

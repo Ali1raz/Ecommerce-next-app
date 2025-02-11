@@ -5,12 +5,11 @@ import { useState, useEffect } from "react"
 import { Button } from "@/components/ui/button"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { toast } from "sonner"
-import { useKindeBrowserClient } from "@kinde-oss/kinde-auth-nextjs"
+import {ShoppingCart} from "lucide-react";
 
 export default function AddToCartButton({ productId, stock_quantity }: { productId: string; stock_quantity: number }) {
     const [quantity, setQuantity] = useState(1)
     const [loading, setLoading] = useState(false)
-    const { isAuthenticated } = useKindeBrowserClient()
 
     async function handleAddToCart() {
         setLoading(true)
@@ -44,12 +43,9 @@ export default function AddToCartButton({ productId, stock_quantity }: { product
                     ))}
                 </SelectContent>
             </Select>
-            <Button
-                className={`px-4 py-2 rounded-none ${loading ? "bg-gray-400" : "bg-yellow-500 hover:bg-yellow-600"}`}
-                onClick={handleAddToCart}
-                disabled={loading || !isAuthenticated}
-            >
-                {loading ? "Adding..." : "Add to Cart"}
+            <Button onClick={handleAddToCart} disabled={loading}
+                className={`px-4 py-2 rounded-none bg-yellow-500 hover:bg-yellow-600`}>
+                <ShoppingCart/> Add to Cart
             </Button>
         </div>
     )

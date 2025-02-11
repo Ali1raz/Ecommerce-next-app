@@ -1,9 +1,8 @@
 import Link from "next/link";
 import React from "react";
 import RemoveFromCartButton from "@/components/RemoveFromCartButton";
-import { Button } from "@/components/ui/button";
 import {TCartProduct} from "@/utils";
-
+import {Badge} from "@/components/ui/badge";
 
 export default function CartProduct({ product }: { product: TCartProduct }) {
   const { name, product_id, id, quantity, total, price, description } = product;
@@ -11,28 +10,25 @@ export default function CartProduct({ product }: { product: TCartProduct }) {
     <div className="flex flex-col  shadow-sm bg-gray-800 text-white">
       <div className="flex items-center justify-center min-w-[157px] min-h-[180px] bg-slate-300 relative">
         {/*<Image ...></Image>*/}
-        <span className="absolute top-1.5 right-1.5 py-1 px-4 text-xs drop-shadow-sm rounded-full bg-red-500 text-white">
-          {quantity}
-        </span>
+          <Badge variant='destructive'
+                 className='absolute top-1.5 right-1.5 text-xs'>quantity: {quantity}</Badge>
+
       </div>
-      <div className="p-4">
-        <p className="line-clamp-1 text-[18px] font-bold capitalize ">{name}</p>
-        <p className="line-clamp-2 text-sm">{description}</p>
-        <p className="text-amber-600 font-bold flex gap-1 items-center mt-1">
-          <span className="text-xs">Rs</span>
-          <span>{price}</span>
-        </p>
-        <div className="flex justify-between items-center mt-3">
-            <Button variant='secondary' asChild className=' px-5 rounded-none py-1'>
-                <Link href={`/products/${product_id}`}>View</Link>
-            </Button>
-          <RemoveFromCartButton id={id} />
+        <div className="p-4">
+            <Link href={`/products/${product_id}`}>
+                <p className="line-clamp-1 text-[18px] font-bold capitalize ">{name}</p>
+            </Link>
+            <p className="line-clamp-2 text-sm">{description}</p>
+            <div className="flex items-center gap-2 text-amber-600">
+                <span className="text-sm">Rs:</span>
+                <span className='text-xl'>{price}</span>
+            </div>
+            <div className="flex items-center gap-2 text-amber-600">
+                <span className="text-sm">Total Rs:</span>
+                <span className='text-xl'>{total}</span>
+            </div>
+            <RemoveFromCartButton id={id}/>
         </div>
-        <div className="flex items-center gap-2 mt-3 text-amber-600">
-          <span className="text-sm">Total Rs:</span>
-          <span>{total}</span>
-        </div>
-      </div>
     </div>
   );
 }

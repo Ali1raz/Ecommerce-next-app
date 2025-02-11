@@ -11,19 +11,8 @@ export default function SearchFormReset() {
   };
 
   return (
-    <Button
-      type="reset"
-      variant="destructive"
-      className=""
-      onClick={reset}
-      asChild={true}
-    >
-      <Link
-        className="bg-red-500/35 px-1  rounded-none  w-full h-full "
-        href="/"
-      >
-        <X />
-      </Link>
+    <Button type="reset" variant="destructive" className='rounded-none' onClick={reset} asChild>
+      <Link href="/"><X /></Link>
     </Button>
   );
 }

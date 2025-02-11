@@ -53,8 +53,8 @@ model ProductCategoryLink {
   product_id  String
   category_id String
 
-  category Category @relation(fields: [category_id], references: [id])
-  product  Product  @relation(fields: [product_id], references: [id])
+  category Category @relation(fields: [category_id], references: [id], onDelete: Cascade)
+  product  Product  @relation(fields: [product_id], references: [id], onDelete: Cascade)
 
   @@unique([category_id, product_id])
 }
@@ -62,14 +62,14 @@ model ProductCategoryLink {
 model Cart {
   id         String     @id @default(uuid())
   created_at DateTime   @default(now())
-  user       User       @relation(fields: [user_id], references: [id])
+  user       User       @relation(fields: [user_id], references: [id], onDelete: Cascade)
   user_id    String     @unique
   items      CartItem[]
 }
 
 model CartItem {
   id         String  @id @default(uuid())
-  cart       Cart    @relation(fields: [cart_id], references: [id])
+  cart       Cart    @relation(fields: [cart_id], references: [id], onDelete: Cascade)
   cart_id    String
   product    Product @relation(fields: [product_id], references: [id], onDelete: Cascade)
   product_id String
