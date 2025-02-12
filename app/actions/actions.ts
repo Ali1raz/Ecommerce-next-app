@@ -121,11 +121,10 @@ export async function delete_product(id: string) {
 
     if (!id) {
         console.log("no id provided");
+        return;
     }
     await prisma.product.delete({
-        where: {
-            id,
-        },
+        where: {id},
     });
     revalidatePath('/');
 }

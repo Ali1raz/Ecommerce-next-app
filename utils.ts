@@ -11,6 +11,14 @@ export function generateSlug(name: string): string {
     return name.toLowerCase().replace(/\s+/g, '-').replace(/[^\w-]+/g, '');
 }
 
+export const routes = [
+    {id: 1, label: "Home", href: "/", public: true,},
+    {id: 2, label: "About", href: "/about-us", public: true,},
+    {id: 3, label: "Cart", href: "/cart", public: false,},
+    {id: 4, label: "Add New Products", href: "/products/new", public: false,},
+    {id: 5, label: "View Dashboard", href: "/dashboard", public: true,},
+]
+
 export type TUser = {
     avatar: string;
     name: string;

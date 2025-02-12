@@ -1,6 +1,5 @@
 "use client"
 
-import * as React from "react"
 
 import { Button } from "@/components/ui/button"
 import {
@@ -17,37 +16,7 @@ import {Avatar, AvatarImage} from "@/components/ui/avatar";
 import Link from "next/link";
 import {LoginLink, LogoutLink} from "@kinde-oss/kinde-auth-nextjs/components";
 import { Menu} from "lucide-react";
-import {DialogContent} from "@radix-ui/react-dialog";
-
-
-const links = [
-    {
-        id: 1,
-        label: "Home",
-        href: "/",
-        public: true,
-    },
-    {
-        id: 2,
-        label: "About",
-        href: "/about-us",
-        public: true,
-    },
-    {
-        id: 3,
-        label: "Cart",
-        href: "/cart",
-        public: false,
-    },
-    {
-        id: 4,
-        label: "Add New Products",
-        href: "/products/new",
-        public: false,
-    },
-
-]
-
+import {routes} from "@/utils";
 
 export default function NavBar() {
     const {user, isAuthenticated } = useKindeBrowserClient()
@@ -75,7 +44,7 @@ export default function NavBar() {
                             </DrawerTitle>
                         </DrawerHeader>
                         <div className='flex flex-col gap-2 px-5'>
-                            {links.filter(link => link.public || isAuthenticated)
+                            {routes.filter(link => link.public || isAuthenticated)
                                 .map((link) => (
                                     <Link href={link.href} key={link.id} className='bg-slate-200 text-sm p-2 transition-all duration-75'>
                                         {link.label}
