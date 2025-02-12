@@ -5,10 +5,13 @@ import {Avatar, AvatarFallback, AvatarImage} from "@/components/ui/avatar";
 import Link from "next/link";
 import {Badge} from "@/components/ui/badge";
 import {User2Icon} from "lucide-react";
+import {getKindeServerSession} from "@kinde-oss/kinde-auth-nextjs/server";
 
 export default async function ProductDetails({product}: { product: TProductProps }) {
     const {id, user_id, name, description, price, stock_quantity, rating} = product;
     const product_owner = await getUserbyId(user_id);
+    const {isAuthenticated} = getKindeServerSession();
+    const isLoggedIn = await isAuthenticated();
     const categories:TCategory[] = await get_categories(id);
     return (
         <div className='mx-5'>
@@ -39,7 +42,7 @@ export default async function ProductDetails({product}: { product: TProductProps
                     <Link className='hover:underline focus:underline focus-within:underline underline-offset-2'
                           href={`/user/${user_id}`}>{product_owner?.name}</Link>
                 </div>
-                <AddToCartButton productId={id} stock_quantity={stock_quantity}/>
+                <AddToCartButton productId={id} stock_quantity={stock_quantity} isLoggedIn={isLoggedIn}/>
             </div>
 
             <div className='mt-4'>

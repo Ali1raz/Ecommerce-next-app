@@ -17,9 +17,9 @@ export default async function Header() {
                     <Link href='/' className='font-bold text-2xl uppercase'>Shop</Link>
                 </div>
                 <div className='flex items-center gap-4'>
-                    <Button asChild variant='secondary'>
+                    <Button variant='secondary' disabled={!user}>
                         <Link href="/cart"
-                              className='px-3 flex gap-2 items-center justify-center'>
+                              className='px-1 flex gap-2 items-center justify-center'>
                             <span className='text-xl'><ShoppingCart/></span>
                             <span className='sm:block hidden'>Cart</span>
                         </Link>

@@ -20,7 +20,7 @@ export default async function UserPage({params}: {params: Promise<{userId: strin
                 </div>
             </div>
             <div className='h-1 w-full bg-gray-600 my-3 '></div>
-            <div className='container px-6 py-4 max-w-6xl mx-auto'>
+            <div className='container py-4 max-w-6xl mx-auto'>
                 {products.length !== 0 ? (<ProductsList data={products}/>): (
                     <h1 className='text-center text-2xl mt-8'>No products by the user.</h1>
                 )}

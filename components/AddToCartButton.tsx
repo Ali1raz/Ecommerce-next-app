@@ -7,7 +7,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { toast } from "sonner"
 import {ShoppingCart} from "lucide-react";
 
-export default function AddToCartButton({ productId, stock_quantity }: { productId: string; stock_quantity: number }) {
+export default function AddToCartButton({ productId, stock_quantity, isLoggedIn }: { productId: string; stock_quantity: number, isLoggedIn: boolean }) {
     const [quantity, setQuantity] = useState(1)
     const [loading, setLoading] = useState(false)
 
@@ -31,7 +31,7 @@ export default function AddToCartButton({ productId, stock_quantity }: { product
     return (
         <div className="flex items-center space-x-4">
             <p>In Stock: {stock_quantity}</p>
-            <Select value={quantity.toString()} onValueChange={(value) => setQuantity(Number.parseInt(value, 10))}>
+            <Select value={quantity.toString()} disabled={!isLoggedIn} onValueChange={(value) => setQuantity(Number.parseInt(value, 10))}>
                 <SelectTrigger className="w-[80px]">
                     <SelectValue placeholder="Quantity" />
                 </SelectTrigger>
@@ -43,9 +43,9 @@ export default function AddToCartButton({ productId, stock_quantity }: { product
                     ))}
                 </SelectContent>
             </Select>
-            <Button onClick={handleAddToCart} disabled={loading}
+            <Button onClick={handleAddToCart} disabled={loading || !isLoggedIn}
                 className={`px-4 py-2 rounded-none bg-yellow-500 hover:bg-yellow-600`}>
-                <ShoppingCart/> Add to Cart
+                <ShoppingCart/> {isLoggedIn ? 'Add to Cart' : 'Login to Add to Cart'}
             </Button>
         </div>
     )

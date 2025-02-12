@@ -2,7 +2,6 @@ import SearchForm from "@/components/SearchForm";
 import {find_or_save_user_to_db, get_all_products} from "@/app/actions/actions";
 import ProductsList from "@/components/ProductsList";
 import {getKindeServerSession} from "@kinde-oss/kinde-auth-nextjs/server";
-import Link from "next/link";
 import GoBackButton from "@/components/GoBackButton";
 
 export default async function Home({
@@ -12,7 +11,6 @@ export default async function Home({
 }) {
 
   const { query, category } = await searchParams;
-  console.log(category, query);
   const products = await get_all_products(query, category);
 
   const {isAuthenticated} = getKindeServerSession();
@@ -33,12 +31,11 @@ export default async function Home({
           <SearchForm query={query} />
         </div>
       </div>
-      <div className="container px-6 py-4 max-w-6xl mx-auto ">
-        <p className="mb-4 font-bold text-2xl">
-          {(query || category) && <GoBackButton label="Reset" />}
-          {(query || category) ? `Search results for "${query || category}"` : "All Products"}
-        </p>
-
+      <p className="mb-4 font-bold text-2xl mx-6 mt-3">
+        {(query || category) && <GoBackButton label="Reset" />}
+        {(query || category) ? `Search results for "${query || category}"` : "All Products"}
+      </p>
+      <div className=" py-4 max-w-6xl mx-auto">
         {products.length !== 0 ? (<ProductsList data={products}/>): (
             <h1 className='text-center text-2xl mt-8'>No products found.</h1>
         )}
