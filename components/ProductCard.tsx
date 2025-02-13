@@ -5,6 +5,8 @@ import {Button} from "@/components/ui/button";
 import {formatDate, TProductProps} from "@/utils";
 import {get_categories, getUserbyId} from "@/app/actions/actions";
 import CategoryButton from "@/components/CategoryButton";
+import {getKindeServerSession} from "@kinde-oss/kinde-auth-nextjs/server";
+import DeleteProductButton from "@/components/DeleteProductButton";
 
 export default async function ProductCard({product}: { product: TProductProps}) {
     const {
@@ -17,14 +19,17 @@ export default async function ProductCard({product}: { product: TProductProps}) 
         stock_quantity,
     } = product;
     const categories = await get_categories(product_id)
-    const user = await getUserbyId(user_id);
+    const productOwner = await getUserbyId(user_id);
+    const {getUser} = getKindeServerSession()
+    const loggedInUser = await getUser();
 
     return (
-        <div className="shadow-sm max-sm:max-w-[400px] bg-gray-800">
+        <div className="shadow-sm sm:max-w-[400px] bg-gray-800">
             <div className="flex items-center justify-center max-w-2xl min-h-[180px] bg-slate-200 relative">
                 {/*<Image ...></Image>*/}
                 <Badge variant='destructive'
                        className='absolute top-1.5 right-1.5 text-xs'>{stock_quantity} in stock</Badge>
+               {loggedInUser && loggedInUser.id === productOwner?.id && <DeleteProductButton productId={product_id} className='absolute bottom-1.5 right-1.5'/>}
             </div>
 
             <div className='text-white p-4'>
@@ -45,7 +50,7 @@ export default async function ProductCard({product}: { product: TProductProps}) 
                     ))}
                 </div>
                 <Button size='sm' variant='link' className='text-gray-300 text-sm' asChild>
-                    <Link href={`/user/${user_id}`}>{user?.name}</Link>
+                    <Link href={`/user/${user_id}`}>{productOwner?.name}</Link>
                 </Button>
                 <Badge variant='default' className='block text-white mt-2 px-3 py-1 bg-slate-700/80 text-xs w-fit'>{formatDate(created_at)}</Badge>
             </div>

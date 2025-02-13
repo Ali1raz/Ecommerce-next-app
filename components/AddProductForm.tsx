@@ -21,7 +21,7 @@ export default function AddProductForm() {
   return (
     <Form
       action={formAction}
-      className="flex flex-col gap-y-3  w-[350px] mx-auto p-4 text-black"
+      className="flex flex-col gap-y-3 w-[350px] mx-auto p-4 text-black focus-within:bg-gray-100"
     >
       <div className="flex flex-col w-full gap-2">
         <div>

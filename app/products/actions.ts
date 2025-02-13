@@ -1,6 +1,7 @@
 'use server'
 
 import {add_new_product} from "@/app/actions/actions";
+import {redirect} from "next/navigation";
 
 export type Errors = {
     product_name?: string;
@@ -41,4 +42,5 @@ export async function createProduct(prevState: FormState | undefined, formData: 
         return {errors}
     }
     await add_new_product(product_name, product_description, price, categories, stock_quantity);
+    redirect('/');
 }

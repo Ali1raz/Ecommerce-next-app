@@ -33,7 +33,7 @@ export async function find_or_save_user_to_db() {
 export async function getUserbyId(id: string) {
     return (await prisma.user.findUnique({
         where: {id},
-        select: {name: true, avatar: true}
+        select: {id: true,name: true, avatar: true}
     }))
 }
 
@@ -64,35 +64,39 @@ export async function add_new_product(
     categories: string,
     stock_quantity: string
 ) {
-    // authorization check
-    const user = await find_or_save_user_to_db();
-    const category_names = categories.split(',').map(category => category.trim()).filter(Boolean);
-    const category_slugs = category_names.map(c => generateSlug(c));
+    try {
+        // authorization check
+        const user = await find_or_save_user_to_db();
+        const category_names = categories.split(',').map(category => category.trim()).filter(Boolean);
+        const category_slugs = category_names.map(c => generateSlug(c));
 
-    await prisma.product.create({
-        data: {
-            name: product_name,
-            description: product_description,
-            rating: 0,
-            price: parseFloat(price),
-            stock_quantity: parseInt(stock_quantity),
-            user_id: user?.id,
+        await prisma.product.create({
+            data: {
+                name: product_name,
+                description: product_description,
+                rating: 0,
+                price: parseFloat(price),
+                stock_quantity: parseInt(stock_quantity),
+                user_id: user?.id,
 
-            categories: {
-                create: await Promise.all(
-                    category_slugs.map(async (slug, index) => {
-                        const category = await prisma.category.upsert({
-                            where: {slug},
-                            update: {},
-                            create: {name: category_names[index],slug},
-                        });
-                        return {category: { connect: {id: category.id} }}
-                    })
-                )
-            }
-        },
-    });
-    redirect("/");
+                categories: {
+                    create: await Promise.all(
+                        category_slugs.map(async (slug, index) => {
+                            const category = await prisma.category.upsert({
+                                where: {slug},
+                                update: {},
+                                create: {name: category_names[index], slug},
+                            });
+                            return {category: {connect: {id: category.id}}}
+                        })
+                    )
+                }
+            },
+        });
+        return {success: true, message: "Product added successfully."};
+    } catch (error) {
+        return {success: false, message: 'Could not add product'};
+    }
 }
 
 export async function get_categories(product_id?: string) {
@@ -118,15 +122,17 @@ export async function get_categories(product_id?: string) {
 }
 
 export async function delete_product(id: string) {
+    try {
+        await prisma.product.delete({
+            where: {id},
+        });
+        revalidatePath('/');
+        return {success: true, message: 'Product deleted successfully.'}
 
-    if (!id) {
-        console.log("no id provided");
-        return;
+    } catch (error) {
+        return {success: false, message: 'Something bad happened...!'};
     }
-    await prisma.product.delete({
-        where: {id},
-    });
-    revalidatePath('/');
+
 }
 
 export async function add_to_cart(id: string, quantity: number = 1) {
