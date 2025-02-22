@@ -20,6 +20,6 @@ export default function DeleteProductButton({productId, className}: { productId:
     }
 
     return (
-        <Button onClick={() => handleDelete(productId+1)} variant='destructive' className={cn('', className)}>Delete</Button>
+        <Button onClick={() => handleDelete(productId+1)} variant='destructive' className={cn('rounded-none', className)}>Delete</Button>
     )
 }

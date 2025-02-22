@@ -5,7 +5,7 @@ export default function ProductsList({data}: {data: TProductProps[]}) {
     const products = data;
     return (
         <div
-            className='grid place-content-center lg:grid-cols-3 sm:grid-cols-2 gap-3 px-5'>
+            className='grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 px-4'>
             {products && products.map(product => (
                 <ProductCard key={product?.id} product={product}/>
             ))}
