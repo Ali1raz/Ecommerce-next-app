@@ -6,6 +6,7 @@ import Link from "next/link";
 import {Badge} from "@/components/ui/badge";
 import {User2Icon} from "lucide-react";
 import {getKindeServerSession} from "@kinde-oss/kinde-auth-nextjs/server";
+import CategoryButton from "@/components/CategoryButton";
 
 export default async function ProductDetails({product}: { product: TProductProps }) {
     const {id, user_id, name, description, price, stock_quantity, rating} = product;
@@ -16,11 +17,11 @@ export default async function ProductDetails({product}: { product: TProductProps
     return (
         <div className='mx-5'>
             <div className='flex flex-col sm:flex-row'>
-                <div className='flex-1 bg-gray-400 h-auto min-h-56 p-4 flex items-center justify-center'>
+                <div className='flex-1 bg-gray-400 h-auto min-h-64 p-4 flex items-center justify-center'>
                     {/*<Image className='mx-auto ' src={`/${image}`} alt={name} width={200} height={200}/>*/}
                     placeholder for product
                 </div>
-                <div className='mt-2 sm:mt-0 sm:ml-2 flex-1'>
+                <div className='mt-2 sm:mt-0 sm:ml-4 flex-1'>
                     <p>{name.charAt(0).toUpperCase() + name.slice(1)}</p>
                     <p className='text-neutral-600'>{description}</p>
                 </div>
@@ -49,8 +50,7 @@ export default async function ProductDetails({product}: { product: TProductProps
                 <h3 className='text-2xl text-amber-500'>Categories:</h3>
                 <div className="mt-3 flex items-center flex-wrap gap-x-3 gap-y-2">
                     {categories.map((category) => (
-                        <Badge variant='secondary' className='cursor-pointer hover:bg-gray-200 font-thin text-sm'
-                               key={category.id}><span className='line-clamp-1'>{category.name}</span></Badge>
+                        <CategoryButton key={category.id} category={category} />
                     ))}
                 </div>
             </div>
