@@ -5,15 +5,17 @@ This is a [Next.js](https://nextjs.org) project bootstrapped with [
 
 ```bash
 git clone https://github.com/Ali1raz/Ecommerce-next-app.git Ecommerce-next-app
-```
-
-Install dependencies:
-
-```bash
+cd Ecommerce-next-app
 npm install
 ```
 
-First, run the development server:
+Set your .env variables and update db:
+
+```bash
+npx prisma db push
+```
+
+Finally run the development server:
 
 ```bash
 npm run dev
@@ -30,9 +32,5 @@ This project uses:
 - PostgreSQL for database management.
 - Prisma for database interactions for Node.js.
 - Kinde for authentication.
-- Search box adds query to URL to fetch related products that matches product name or description.
-- Form validation for adding new products.
-- Cart Page shows products added with total price and quantity.
-- Bill page to view total products and grand total price.
 
 ---
