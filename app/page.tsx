@@ -17,7 +17,7 @@ export default async function Home({
   if (await isAuthenticated()) await find_or_save_user_to_db()
 
   return (
-    <>
+    <div className='max-w-5xl mx-auto'>
       <div className="bg-pink-500 border-b-2 border-transparent">
         <div className="text-center flex items-center flex-col py-4">
           <h2 className="font-bold md:text-5xl text-3xl">
@@ -40,6 +40,6 @@ export default async function Home({
             <h1 className='text-center text-2xl mt-8'>No products found.</h1>
         )}
       </div>
-    </>
+    </div>
   );
 }

@@ -127,6 +127,9 @@ export async function delete_product(id: string) {
             where: {id},
         });
         revalidatePath('/');
+        await prisma.category.deleteMany({ // delete categories
+            where: {products: {none: {}}},
+        })
         return {success: true, message: 'Product deleted successfully.'}
 
     } catch (error) {

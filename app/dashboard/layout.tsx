@@ -1,15 +1,22 @@
-import Link from "next/link";
+import type React from "react"
+import type { Metadata } from "next"
 
-export default function DashboardLayout({ children }: { children: React.ReactNode }) {
+export const metadata: Metadata = {
+    title: "Analytics Dashboard",
+    description: "View products, users, and category statistics.",
+}
+
+export default function DashboardLayout({children,}: { children: React.ReactNode }) {
     return (
-        <div className='max-w-4xl mx-auto bg-black min-h-screen text-white'>
-            <Link href='/dashboard' className='text-center sticky top-0 bg-violet-800 w-full block'>Refresh</Link>
-            <div className='px-2 flex gap-2 mb-2'>
-                <Link className='decoration-blue-700' href='/dashboard/?filter=users'>users</Link>
-                <Link className='decoration-blue-700' href='/dashboard/?filter=products'>products</Link>
-                <Link className='decoration-blue-700' href='/dashboard/?filter=categories'>categories</Link>
+        <div className="max-w-6xl mx-auto">
+            <div className="container py-6">
+                <div className="flex flex-col gap-1 mb-8">
+                    <h1 className="text-3xl font-bold tracking-tight">Analytics Dashboard</h1>
+                    <p className="text-muted-foreground">Monitor products, users, and categories over time.</p>
+                </div>
+                {children}
             </div>
-            {children}
         </div>
     )
 }
+
