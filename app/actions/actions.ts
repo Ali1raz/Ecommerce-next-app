@@ -57,6 +57,12 @@ export async function get_all_products(query?: string, category_slug?: string) {
         });
 }
 
+export async function get_product(product_id: string) {
+    return prisma.product.findUnique({
+        where: {id: product_id},
+    });
+}
+
 export async function add_new_product(
     product_name: string,
     product_description: string,
@@ -133,7 +139,7 @@ export async function delete_product(id: string) {
         return {success: true, message: 'Product deleted successfully.'}
 
     } catch (error) {
-        return {success: false, message: 'Something bad happened...!'};
+        return {success: false, message: 'Could not delete product...!'};
     }
 
 }

@@ -6,8 +6,7 @@ import {cn} from "@/lib/utils";
 import {toast} from "sonner";
 import {AlertCircleIcon, CheckCircleIcon} from "lucide-react";
 
-export default function DeleteProductButton({productId, className}: { productId: string, className: string }) {
-    console.log(productId);
+export default function DeleteProductButton({productId, className}: { productId: string, className?: string }) {
     async function handleDelete(id: string) {
         const result = await delete_product(id)
         toast(`${result.message}`, {
@@ -15,11 +14,14 @@ export default function DeleteProductButton({productId, className}: { productId:
             dismissible: true,
             position: "top-right",
             style: {borderRadius: 0},
-
         })
     }
 
     return (
-        <Button onClick={() => handleDelete(productId+1)} variant='destructive' className={cn('rounded-none', className)}>Delete</Button>
+        <Button
+            variant='ghost'
+            onClick={() => handleDelete(productId+1)}
+            className={cn('rounded-none active:bg-transparent h-fit p-0', className)}
+        >Delete</Button>
     )
 }

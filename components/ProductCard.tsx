@@ -6,6 +6,7 @@ import { get_categories, getUserbyId } from "@/app/actions/actions"
 import CategoryButton from "@/components/CategoryButton"
 import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server"
 import DeleteProductButton from "@/components/DeleteProductButton"
+import ProductActions from "@/components/ProductActions";
 
 export default async function ProductCard({ product }: { product: TProductProps }) {
     const { name, id: product_id, user_id, price, rating, created_at, stock_quantity } = product
@@ -24,10 +25,7 @@ export default async function ProductCard({ product }: { product: TProductProps 
                     {stock_quantity} in stock
                 </Badge>
                 {canDelete && (
-                    <DeleteProductButton
-                        productId={product_id}
-                        className="absolute bottom-2 right-2 opacity-0 transition-opacity group-hover:opacity-100"
-                    />
+                    <ProductActions className="absolute bottom-2 right-2" product_id={product_id} />
                 )}
             </div>
 
