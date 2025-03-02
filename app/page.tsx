@@ -3,6 +3,7 @@ import {find_or_save_user_to_db, get_all_products} from "@/app/actions/actions";
 import ProductsList from "@/components/ProductsList";
 import {getKindeServerSession} from "@kinde-oss/kinde-auth-nextjs/server";
 import GoBackButton from "@/components/GoBackButton";
+import CategoriesList from "@/components/CategoriesList";
 
 export default async function Home({
   searchParams,
@@ -35,6 +36,7 @@ export default async function Home({
         {(query || category) && <GoBackButton label="Reset" />}
         {(query || category) ? `Search results for "${query || category}"` : "All Products"}
       </p>
+        <CategoriesList query={query} category={category} />
       <div className=" py-4 max-w-6xl mx-auto">
         {products.length !== 0 ? (<ProductsList data={products}/>): (
             <h1 className='text-center text-2xl mt-8'>No products found.</h1>

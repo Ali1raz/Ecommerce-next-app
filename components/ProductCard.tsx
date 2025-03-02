@@ -5,7 +5,6 @@ import { formatDate, type TProductProps } from "@/utils"
 import { get_categories, getUserbyId } from "@/app/actions/actions"
 import CategoryButton from "@/components/CategoryButton"
 import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server"
-import DeleteProductButton from "@/components/DeleteProductButton"
 import ProductActions from "@/components/ProductActions";
 
 export default async function ProductCard({ product }: { product: TProductProps }) {

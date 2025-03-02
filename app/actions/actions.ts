@@ -105,27 +105,59 @@ export async function add_new_product(
     }
 }
 
-export async function get_categories(product_id?: string) {
-    let categories;
+export async function get_categories(
+    product_id?: string,
+    query?: string,
+    category_slug?: string
+) {
     if (!product_id) {
-        categories = await prisma.category.findMany({
-            select: {id: true, name: true, slug: true},
+        const categories = await prisma.category.findMany({
+            where: {
+                ...(category_slug && { slug: category_slug }),
+                ...(query && {
+                    OR: [
+                        { name: { contains: query, mode: "insensitive" } },
+                        {
+                            // Look into the join relation "products" (ProductCategoryLink)
+                            // and further into the "product" relation
+                            products: {
+                                some: {
+                                    OR: [
+                                        { product: { name: { contains: query, mode: "insensitive" } } },
+                                        { product: { description: { contains: query, mode: "insensitive" } } },
+                                        { product: { user: { name: { contains: query, mode: "insensitive" } } } },
+                                    ],
+                                },
+                            },
+                        },
+                    ],
+                }),
+            },
+            select: { id: true, name: true, slug: true },
         });
+        return categories;
     } else {
+        // When product_id is provided, we fetch through the join table.
         const pc = await prisma.productCategoryLink.findMany({
             where: {
                 product_id: product_id,
+                ...(category_slug && { category: { slug: category_slug } }),
+                ...(query && {
+                    OR: [
+                        { product: { name: { contains: query, mode: "insensitive" } } },
+                        { product: { description: { contains: query, mode: "insensitive" } } },
+                        { product: { user: { name: { contains: query, mode: "insensitive" } } } },
+                    ],
+                }),
             },
             select: {
-                category: {
-                    select: {id: true, name: true, slug: true},
-                }
-            }
-        })
-        categories = pc.map(link => link.category)
+                category: { select: { id: true, name: true, slug: true } },
+            },
+        });
+        return pc.map(link => link.category);
     }
-    return categories;
 }
+
 
 export async function delete_product(id: string) {
     try {
