@@ -3,7 +3,6 @@ import {TCategory, TProductProps} from "@/utils";
 import {get_categories, getUserbyId} from "@/app/actions/actions";
 import {Avatar, AvatarFallback, AvatarImage} from "@/components/ui/avatar";
 import Link from "next/link";
-import {Badge} from "@/components/ui/badge";
 import {User2Icon} from "lucide-react";
 import {getKindeServerSession} from "@kinde-oss/kinde-auth-nextjs/server";
 import CategoryButton from "@/components/CategoryButton";

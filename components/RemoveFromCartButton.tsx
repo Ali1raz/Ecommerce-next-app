@@ -23,7 +23,7 @@ export default function RemoveFromCartButton({ id }: { id: string }) {
         },
       });
     } catch (error) {
-      toast.error("Failed to remove item from cart");
+      toast.error(`Failed to remove item from cart: ${error}`);
     } finally {
       setLoading(false);
     }

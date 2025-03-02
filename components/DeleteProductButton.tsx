@@ -20,7 +20,7 @@ export default function DeleteProductButton({productId, className}: { productId:
     return (
         <Button
             variant='ghost'
-            onClick={() => handleDelete(productId+1)}
+            onClick={() => handleDelete(productId)}
             className={cn('rounded-none active:bg-transparent h-fit p-0', className)}
         >Delete</Button>
     )

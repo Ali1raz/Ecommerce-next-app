@@ -101,6 +101,7 @@ export async function add_new_product(
         });
         return {success: true, message: "Product added successfully."};
     } catch (error) {
+        console.log(error)
         return {success: false, message: 'Could not add product'};
     }
 }
@@ -171,6 +172,7 @@ export async function delete_product(id: string) {
         return {success: true, message: 'Product deleted successfully.'}
 
     } catch (error) {
+        console.log(error)
         return {success: false, message: 'Could not delete product...!'};
     }
 
@@ -240,7 +242,8 @@ export async function add_to_cart(id: string, quantity: number = 1) {
         console.log("added to cart.");
         return { success: true, message: "Added to cart." };
     } catch (error) {
-        return { success: false, message: error.message || "An error occurred" };
+        console.log(error)
+        return { success: false, message: "An error occurred" };
     }
 }
 

@@ -4,7 +4,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
 import { Button } from "@/components/ui/button"
 import type {TKindeUser} from "@/utils"
-import { LogOut, Settings, UserIcon } from "lucide-react"
+import { LogOut, UserIcon } from "lucide-react"
 import {LogoutLink} from "@kinde-oss/kinde-auth-nextjs/components";
 import Link from "next/link";
 
