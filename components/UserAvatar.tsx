@@ -6,7 +6,7 @@ export default function UserAvatar({user, size}: {user: TUser, size: number}) {
     return (
         <Avatar>
             <AvatarImage
-                src={user?.avatar}
+                src={user?.picture}
                 alt='user'
                 className='rounded-full'
                 width={size} height={size}

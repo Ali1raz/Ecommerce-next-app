@@ -20,8 +20,16 @@ export const routes = [
 ]
 
 export type TUser = {
-    avatar: string;
+    picture: string;
     name: string;
+    email?: string;
+}
+
+export type TKindeUser = {
+    id: string;
+    picture: string;
+    given_name: string;
+    family_name: string;
     email?: string;
 }
 export type TCategory = {
