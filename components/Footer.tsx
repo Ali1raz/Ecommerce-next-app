@@ -1,6 +1,6 @@
 import Link from "next/link";
 import {getToCategories} from "@/app/actions/actions";
-import {TCategory} from "@/utils";
+import {mySocialLinks, routes, TCategory} from "@/utils";
 
 export default async function Footer() {
     const categories:TCategory[] = await getToCategories();
@@ -11,24 +11,25 @@ export default async function Footer() {
                     <div>
                         <h3 className="text-lg font-semibold mb-2">Quick Links</h3>
                         <div className='flex flex-col max-w-fit space-y-1'>
-                            <Link href="/" className="hover:text-gray-300 ">Home</Link>
-                            <Link href="/cart" className="hover:text-gray-300 ">Cart</Link>
-                            <Link href="/about-us" className="hover:text-gray-300 ">About Us</Link>
+                            {routes.map(route => (
+                                route.public && <Link className="hover:text-gray-300 capitalize" href={route.href} key={route.id}>{route.label}</Link>
+                            ))}
                         </div>
                     </div>
                     <div>
                         <h3 className="text-lg font-semibold mb-2">Top Categories</h3>
                         <div className='flex flex-col max-w-fit space-y-2'>
                             {categories.map(category => (
-                                <Link  className='hover:text-gray-300 capitalize' href={`/?category=${category.slug}`} key={category.id}>{category.name}</Link>
+                                <Link className='hover:text-gray-300 capitalize' href={`/?category=${category.slug}`} key={category.id}>{category.name}</Link>
                             ))}
                         </div>
                     </div>
                     <div>
                         <h3 className="text-lg font-semibold mb-2">Connect with me</h3>
                         <div className='flex flex-col max-w-fit space-y-2'>
-                            <Link href="https://codepen.io/Ali1raz " className='hover:text-gray-300'>Codepen</Link>
-                            <Link href="https://github.com/Ali1raz" className='hover:text-gray-300'>Github</Link>
+                            {mySocialLinks.map(link => (
+                                <Link href={link.href} key={link.id} className='hover:text-gray-300 capitalize'>{link.label}</Link>
+                            ))}
                         </div>
                     </div>
                 </div>
