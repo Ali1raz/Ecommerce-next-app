@@ -4,6 +4,7 @@ import ProductsList from "@/components/ProductsList";
 import {getKindeServerSession} from "@kinde-oss/kinde-auth-nextjs/server";
 import GoBackButton from "@/components/GoBackButton";
 import CategoriesList from "@/components/CategoriesList";
+import {XIcon} from "lucide-react";
 
 export default async function Home({
   searchParams,
@@ -33,7 +34,7 @@ export default async function Home({
         </div>
       </div>
       <p className="mb-4 font-bold text-2xl mx-6 mt-3">
-        {(query || category) && <GoBackButton label="Reset" />}
+        {(query || category) && <GoBackButton label="Reset" icon={<XIcon />} />}
         {(query || category) ? `Search results for "${query || category}"` : "All Products"}
       </p>
         <CategoriesList query={query} category={category} />
