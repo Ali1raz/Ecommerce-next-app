@@ -159,6 +159,18 @@ export async function get_categories(
     }
 }
 
+export async function getToCategories() {
+    const categories = await prisma.category.findMany({
+        orderBy: {
+            products: {
+                _count: 'desc',
+            },
+        },
+        take: 3,
+    });
+    return categories;
+}
+
 
 export async function delete_product(id: string) {
     try {

@@ -1,6 +1,9 @@
 import Link from "next/link";
+import {getToCategories} from "@/app/actions/actions";
+import {TCategory} from "@/utils";
 
-export default function Footer() {
+export default async function Footer() {
+    const categories:TCategory[] = await getToCategories();
     return (
         <footer className="p-4 mt-8 border-t-2 bg-slate-800 text-slate-200 ">
             <div className="container mx-auto">
@@ -14,15 +17,15 @@ export default function Footer() {
                         </div>
                     </div>
                     <div>
-                        <h3 className="text-lg font-semibold mb-2">Categories</h3>
+                        <h3 className="text-lg font-semibold mb-2">Top Categories</h3>
                         <div className='flex flex-col max-w-fit space-y-2'>
-                            <Link href="#" className='hover:text-gray-300 '>Electronics</Link>
-                            <Link href="#" className='hover:text-gray-300'>Toys</Link>
-                            <Link href="#" className='hover:text-gray-300'>Boutique</Link>
+                            {categories.map(category => (
+                                <Link  className='hover:text-gray-300 capitalize' href={`/?category=${category.slug}`} key={category.id}>{category.name}</Link>
+                            ))}
                         </div>
                     </div>
                     <div>
-                        <h3 className="text-lg font-semibold mb-2">Follow Us</h3>
+                        <h3 className="text-lg font-semibold mb-2">Connect with me</h3>
                         <div className='flex flex-col max-w-fit space-y-2'>
                             <Link href="https://codepen.io/Ali1raz " className='hover:text-gray-300'>Codepen</Link>
                             <Link href="https://github.com/Ali1raz" className='hover:text-gray-300'>Github</Link>
