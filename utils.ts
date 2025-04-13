@@ -15,8 +15,13 @@ export const routes = [
     {id: 1, label: "Home", href: "/", public: true,},
     {id: 2, label: "About", href: "/about-us", public: true,},
     {id: 3, label: "Cart", href: "/cart", public: false,},
-    {id: 4, label: "Add New Products", href: "/products/new", public: false,},
-    {id: 5, label: "View Dashboard", href: "/dashboard", public: true,},
+    {id: 4, label: "New Products", href: "/products/new", public: false,},
+    {id: 5, label: "Dashboard", href: "/dashboard", public: true,},
+]
+
+export const mySocialLinks = [
+    {id: 1, label: "GitHub", href: 'https://github.com/Ali1raz'},
+    {id: 2, label: "CodePen", href: 'https://codepen.io/ali1raz'},
 ]
 
 export type TUser = {
